@@ -20,6 +20,9 @@ namespace Console_AS_pla
 
             One(books);
             Console.WriteLine("-----");
+
+            Two(books);
+            Console.WriteLine("-----");
         }
 
         private static void One(List<Book> books)
@@ -33,8 +36,10 @@ namespace Console_AS_pla
 
         private static void Two(List<Book> books)
         {
-
+            int count = books.Count(n => n.Title.Contains("C#"));
+            Console.WriteLine(count);
         }
+
 
     }
 
