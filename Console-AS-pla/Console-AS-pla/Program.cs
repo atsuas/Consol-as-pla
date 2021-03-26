@@ -32,6 +32,9 @@ namespace Console_AS_pla
 
             Fifth(books);
             Console.WriteLine("-----");
+
+            Six(books);
+            Console.WriteLine("----");
         }
 
         private static void One(List<Book> books)
@@ -69,7 +72,20 @@ namespace Console_AS_pla
             Console.WriteLine("{0}", page);
         }
 
+        private static void Six(List<Book> books)
+        {
+            var code = books.Where(n => n.Pages >= 400)
+                            .OrderByDescending(n => n.Price);
+            foreach (var book in code)
+            {
+                Console.WriteLine("{0} {1}", book.Title, book.Price);
+            }
+        }
 
+        private static void Seven(List<Book> books)
+        {
+
+        }
     }
 
     class Book
