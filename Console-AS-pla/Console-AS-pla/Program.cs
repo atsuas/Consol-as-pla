@@ -23,6 +23,15 @@ namespace Console_AS_pla
 
             Two(books);
             Console.WriteLine("-----");
+
+            Three(books);
+            Console.WriteLine("-----");
+
+            Four(books);
+            Console.WriteLine("-----");
+
+            Fifth(books);
+            Console.WriteLine("-----");
         }
 
         private static void One(List<Book> books)
@@ -38,6 +47,26 @@ namespace Console_AS_pla
         {
             int count = books.Count(n => n.Title.Contains("C#"));
             Console.WriteLine(count);
+        }
+
+        private static void Three(List<Book> books)
+        {
+            var contain = books.Where(n => n.Title.Contains("C#"))
+                               .Average(n => n.Pages);
+            Console.WriteLine(contain);
+        }
+
+        private static void Four(List<Book> books)
+        {
+            var title = books.FirstOrDefault(n => n.Price >= 4000);
+            Console.WriteLine("{0}", title.Title);
+        }
+
+        private static void Fifth(List<Book> books)
+        {
+            var page = books.Where(n => n.Price <= 4000)
+                            .Max(n => n.Pages);
+            Console.WriteLine("{0}", page);
         }
 
 
