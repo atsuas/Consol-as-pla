@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Console-AS-pla/1.0.0": {
+        "runtime": {
+          "Console-AS-pla.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Console-AS-pla/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

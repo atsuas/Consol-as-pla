@@ -1,0 +1,13 @@
+C:\Users\aoyuu\OneDrive\デスクトップ\C#フォルダ-Windows\Console-as-pla\Console-AS-pla\Console-AS-pla\bin\Debug\netcoreapp3.1\Console-AS-pla.exe
+C:\Users\aoyuu\OneDrive\デスクトップ\C#フォルダ-Windows\Console-as-pla\Console-AS-pla\Console-AS-pla\bin\Debug\netcoreapp3.1\Console-AS-pla.deps.json
+C:\Users\aoyuu\OneDrive\デスクトップ\C#フォルダ-Windows\Console-as-pla\Console-AS-pla\Console-AS-pla\bin\Debug\netcoreapp3.1\Console-AS-pla.runtimeconfig.json
+C:\Users\aoyuu\OneDrive\デスクトップ\C#フォルダ-Windows\Console-as-pla\Console-AS-pla\Console-AS-pla\bin\Debug\netcoreapp3.1\Console-AS-pla.runtimeconfig.dev.json
+C:\Users\aoyuu\OneDrive\デスクトップ\C#フォルダ-Windows\Console-as-pla\Console-AS-pla\Console-AS-pla\bin\Debug\netcoreapp3.1\Console-AS-pla.dll
+C:\Users\aoyuu\OneDrive\デスクトップ\C#フォルダ-Windows\Console-as-pla\Console-AS-pla\Console-AS-pla\bin\Debug\netcoreapp3.1\Console-AS-pla.pdb
+C:\Users\aoyuu\OneDrive\デスクトップ\C#フォルダ-Windows\Console-as-pla\Console-AS-pla\Console-AS-pla\obj\Debug\netcoreapp3.1\Console-AS-pla.csprojAssemblyReference.cache
+C:\Users\aoyuu\OneDrive\デスクトップ\C#フォルダ-Windows\Console-as-pla\Console-AS-pla\Console-AS-pla\obj\Debug\netcoreapp3.1\Console-AS-pla.AssemblyInfoInputs.cache
+C:\Users\aoyuu\OneDrive\デスクトップ\C#フォルダ-Windows\Console-as-pla\Console-AS-pla\Console-AS-pla\obj\Debug\netcoreapp3.1\Console-AS-pla.AssemblyInfo.cs
+C:\Users\aoyuu\OneDrive\デスクトップ\C#フォルダ-Windows\Console-as-pla\Console-AS-pla\Console-AS-pla\obj\Debug\netcoreapp3.1\Console-AS-pla.csproj.CoreCompileInputs.cache
+C:\Users\aoyuu\OneDrive\デスクトップ\C#フォルダ-Windows\Console-as-pla\Console-AS-pla\Console-AS-pla\obj\Debug\netcoreapp3.1\Console-AS-pla.dll
+C:\Users\aoyuu\OneDrive\デスクトップ\C#フォルダ-Windows\Console-as-pla\Console-AS-pla\Console-AS-pla\obj\Debug\netcoreapp3.1\Console-AS-pla.pdb
+C:\Users\aoyuu\OneDrive\デスクトップ\C#フォルダ-Windows\Console-as-pla\Console-AS-pla\Console-AS-pla\obj\Debug\netcoreapp3.1\Console-AS-pla.genruntimeconfig.cache
