@@ -35,6 +35,9 @@ namespace Console_AS_pla
 
             Six(books);
             Console.WriteLine("----");
+
+            Seven(books);
+            Console.WriteLine("-----");
         }
 
         private static void One(List<Book> books)
@@ -84,7 +87,11 @@ namespace Console_AS_pla
 
         private static void Seven(List<Book> books)
         {
-
+            var title = books.Where(n => n.Title.Contains("C#") && n.Pages <= 500);
+            foreach (var tl in title)
+            {
+                Console.WriteLine("{0}", tl.Title);
+            }             
         }
     }
 
