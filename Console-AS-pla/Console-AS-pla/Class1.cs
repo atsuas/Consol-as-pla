@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.IO;
+using System.Collections;
 
 namespace Console_AS_pla
 {
-    class Abbreviations
+    class Abbreviations : IEnumerable<KeyValuePair<string, string>>
     {
         private Dictionary<string, string> _dict = new Dictionary<string, string>();
 
@@ -55,6 +56,16 @@ namespace Console_AS_pla
         public bool Remove(string abb)
         {
             return _dict.Remove(abb);
+        }
+
+        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
+        {
+            return ((IEnumerable<KeyValuePair<string, string>>)_dict).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<KeyValuePair<string, string>>)_dict).GetEnumerator();
         }
     }
 }
