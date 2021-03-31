@@ -9,14 +9,12 @@ namespace Console_AS_pla
     {
         static void Main(string[] args)
         {
-            var lines = new string[]
+            var lines = File.ReadAllLines(@"C:\temp\祇園精舎.txt");
+            foreach (var item in lines)
             {
-                "ああああああああああ、あああああああ",
-                "いいいいいいいいいいいいいいいいいいいいい",
-                "ううううううううううううううううううううううううう",
-                "ええええええええええええええええええええええええええええ"
-            };
-            File.WriteAllLines(@"C:\temp\祇園精舎.txt", lines);
+                Console.WriteLine(item);
+            }
+
         }
 
     }
