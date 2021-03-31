@@ -9,18 +9,37 @@ namespace Console_AS_pla
     {
         static void Main(string[] args)
         {
-            if (args.Length <= 1);
-            return;
-            var file1 = args[0];
-            var file2 = args[1];
-            One(file1, file2);
+            if (args.Length <= 1)
+                return;
+
+            //確認用
+            Console.WriteLine($"source: {Path.GetFullPath(args[0])}");
+            Console.WriteLine($"dest:   {Path.GetFullPath(args[1])}\n");
 
 
+            var sourceDir = args[0];
+            var destDir = args[1];
+            CopyFile(sourceDir, destDir);
         }
 
-        private static void One(string file1, string file2)
+        private static void CopyFile(string sourceDir, string destDir)
         {
-            File.AppendAllLines(file1, File.ReadLines(file2));
+            var files = Directory.EnumerateFiles(sourceDir, "*.*");
+            if (Directory.Exists(destDir))
+                Directory.CreateDirectory(destDir);
+            foreach (var file in files)
+            {
+                var dest = GetBakFilePath(destDir, file);
+                Console.WriteLine(dest);
+                File.Copy(file, dest, overwrite: true);
+            }
+        }
+
+        private static string GetBakFilePath(string destDir, string file)
+        {
+            var name = Path.GetFileNameWithoutExtension(file + "_bak");
+            var ext = Path.GetExtension(file);
+            return Path.Combine(destDir, name + ext);
         }
     }
 }
