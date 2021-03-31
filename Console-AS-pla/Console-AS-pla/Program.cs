@@ -9,28 +9,18 @@ namespace Console_AS_pla
     {
         static void Main(string[] args)
         {
-            if (args.Length == 0)
-                return;
-            var file = args[0];
-            var outputPath = Numberring(file);
+            if (args.Length <= 1);
+            return;
+            var file1 = args[0];
+            var file2 = args[1];
+            One(file1, file2);
 
-            Display(outputPath);
 
         }
 
-        private static string Numberring(string file)
+        private static void One(string file1, string file2)
         {
-            var lines = File.ReadLines(file)
-                            .Select((s, n) => string.Format("{0,4}{1}", n + 1, s));
-            var path = Path.ChangeExtension(file, ".txt");
-            File.WriteAllLines(path, lines);
-            return path;
-        }
-
-        private static void Display(string outputPath)
-        {
-            var text = File.ReadAllText(outputPath);
-            Console.WriteLine(text);
+            File.AppendAllLines(file1, File.ReadLines(file2));
         }
     }
 }
