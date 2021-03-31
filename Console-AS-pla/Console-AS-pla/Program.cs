@@ -9,7 +9,15 @@ namespace Console_AS_pla
     {
         static void Main(string[] args)
         {
-           
+            var path = "C:\\temp\\祇園精舎.txt";
+            CreateFile(path);
+
+            var count = CountChars(path);
+            Console.WriteLine($"{count}文字あります");
+            Console.WriteLine();
+
+            CreateBot(path);
+
         }
 
         static int CountChars(string path)
