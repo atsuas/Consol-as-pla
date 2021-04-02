@@ -9,38 +9,44 @@ namespace AS
     {
         static void Main(string[] args)
         {
-            var songs = new Song[]
-            {
-               new Song("Let it be", "The Beatles", 243),
-                new Song("Bridge Over Troubled Water", "Simon & Garfunkel", 293),
-                new Song("Close To You", "Carpenters", 276),
-                new Song("Honesty", "Billy Joel", 231),
-                new Song("I Will Always Love You", "Whitney Houston", 273),
-            };
+            var numbers = new List<int> { 12, 87, 94, 14, 53, 20, 40, 35, 76, 91, 31, 17, 48 };
 
+            One(numbers);
+            Console.WriteLine();
+
+            Two(numbers);
+            Console.WriteLine();
+
+            Three(numbers);
+            Console.WriteLine();
         }
 
-        private static void PrintSongs(Song[] songs )
+        private static void One(List<int> numbers) 
         {
-            foreach (var song in songs)
+            var exist = numbers.Exists(n => n % 8 == 0 || n % 9 == 0);
+            if (exist)
+                Console.WriteLine("存在します");
+            else
+                Console.WriteLine("存在していません");
+        }
+
+        private static void Two(List<int> numbers)
+        {
+            var fe = numbers.Select(n => n / 2.0);
+            foreach (var number in fe)
             {
-                Console.WriteLine(@"{0} {1} {2}", )
+                Console.WriteLine(number);
             }
         }
 
-    }
-
-    class Song
-    {
-        public string Title { get; set; }
-        public string ArtistName { get; set; }
-        public int Length { get; set; }
-
-        public Song(string title, string artistname, int length)
+        private static void Three(List<int> numbers)
         {
-            Title = title;
-            ArtistName = artistname;
-            Length = length;
+            var fifth = numbers.Where(n => n >= 50);
+            foreach (var number in fifth)
+            {
+                Console.WriteLine(number);
+            }
         }
     }
+
 }
