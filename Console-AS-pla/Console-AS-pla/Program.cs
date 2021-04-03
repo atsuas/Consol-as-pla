@@ -9,13 +9,12 @@ namespace AS
     {
         static void Main(string[] args)
         {
-            var one = Console.ReadLine();
-            var two = Console.ReadLine();
-            if (string.Compare(one, two, ignoreCase: true) == 0)
-                Console.WriteLine("同じです");
+            var line = Console.ReadLine();
+            int num;
+            if (int.TryParse(line, out num))
+                Console.WriteLine("{0:#,#}", num);
             else
-                Console.WriteLine("等しくありません");
-                
+                Console.WriteLine("数値文字列ではありません");
         }
     }
 
