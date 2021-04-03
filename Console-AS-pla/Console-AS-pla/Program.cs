@@ -9,61 +9,103 @@ namespace AS
     {
         static void Main(string[] args)
         {
-            var names = new List<string>
+            var yearMonth = new YearMonth[]
             {
-                "Tokyo", "New Delhi", "Bangkok", "London", "Paris", "Berlin", "Canberra", "Hong Kong",
+                new YearMonth(1980, 1),
+                new YearMonth(1990, 4),
+                new YearMonth(2000, 7),
+                new YearMonth(2010, 9),
+                new YearMonth(2020, 12),
             };
 
-            //One(names);
+            //One(yearMonth);
             //Console.WriteLine();
 
-            Two(names);
+            Two(yearMonth);
             Console.WriteLine();
 
-            Three(names);
+            Three(yearMonth);
             Console.WriteLine();
 
-            Four(names);
-            Console.WriteLine();
         }
 
-        private static void One(List<string> names)
+        public static void One(YearMonth[] yearMonth)
         {
-            do
-            {
-                var line = Console.ReadLine();
-                if (string.IsNullOrEmpty(line))
-                    break;
-                var index = names.FindIndex(s => s == line);
-                Console.WriteLine(index);
-            } while (true);
-            
-        }
-
-        private static void Two(List<string> names)
-        {
-            var count = names.Count(s => s.Contains("o"));
-            Console.WriteLine(count);               
-        }
-
-        private static void Three(List<string> names)
-        {
-            var array = names.Where(s => s.Contains("o"))
-                             .ToArray();
-            foreach (var ar in array)
-            {
-                Console.WriteLine(ar);
-            }
-        }
-
-        private static void Four(List<string> names)
-        {
-            var park = names.Where(n => n.StartsWith("B"))
-                            .Select(s => s.Length);
-            foreach (var item in park)
+            foreach (var item in yearMonth)
             {
                 Console.WriteLine(item);
             }
+        }
+
+        static YearMonth FIrst21(YearMonth[] yearMonths)
+        {
+            foreach (var item in yearMonths)
+            {
+                if (item.Is21Century)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        public static void Two(YearMonth[] yearMonth)
+        {
+            var yearmonth = FIrst21(yearMonth);
+            if (yearMonth == null)
+                Console.WriteLine("データはありません");
+            else
+                Console.WriteLine(yearmonth);
+
+        }
+
+        private static void Three(YearMonth[] yearMonth)
+        {
+            var month = yearMonth.Select(x => x.AddOneMonth())
+                                 .ToArray();
+            foreach (var item in month)
+            {
+                Console.WriteLine(item);
+            }
+            
+        }
+
+    }
+
+    class YearMonth
+    {
+        public int Year { get; private set; }
+        public int Month { get; private set; }
+
+        public YearMonth(int year, int month)
+        {
+            Year = year;
+            Month = month;
+        }
+
+        public bool Is21Century
+        {
+            get
+            {
+                return 2001 <= Year && Year <= 2100;
+            }
+        }
+
+        public YearMonth AddOneMonth()
+        {
+            if (Month == 12)
+            {
+                return new YearMonth(this.Year + 1, 1);
+            }
+            else
+            {
+                return new YearMonth(this.Year, this.Month + 1);
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"{Year}年{Month}月";
         }
     }
 
