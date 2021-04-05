@@ -9,11 +9,13 @@ namespace AS
     {
         static void Main(string[] args)
         {
-            var employee = new Dictionary<int, Program>
-            {
-                {100, new Program(100, "清水量久") },
-                {112, new Program(112, "小林武") },
-            };
+            //要素の追加
+            flowerDict["violet"] = 600;
+            employeeDict = new employee(130, "鈴木敬之");
+
+            //Addでも追加できる
+            flowerDict.Add("violet", 600);
+            employeeDict.Add(130, "鈴木敬之");
 
         }
 
