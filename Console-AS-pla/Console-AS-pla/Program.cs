@@ -9,20 +9,8 @@ namespace AS
     {
         static void Main(string[] args)
         {
-            //ディクショナリから要素を取り出す
-            int price = flowerDict["rose"];
-
-            var employee = employee[125];
-
-            //ディクショナリにキーが存在するか確かめる
-            var key = "pansy";
-            if (flowerDict.ContainsKey(key))
-            {
-                var price = flowerDict[key];
-                //priceに関する処理
-
-            }
-
+            //要素を削除する
+            var result = flowerDict.Remove("pansy");
         }
 
     }
