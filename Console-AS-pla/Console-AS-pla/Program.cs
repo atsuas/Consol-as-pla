@@ -9,13 +9,10 @@ namespace AS
     {
         static void Main(string[] args)
         {
-            var flowerDict = new Dictionary<string, int>()
+            var employee = new Dictionary<int, Program>
             {
-                ["sunflower"] = 400,
-                ["pansy"] = 300,
-                ["tulip"] = 350,
-                ["rose"] = 500,
-                ["dahlia"] = 450,
+                {100, new Program(100, "清水量久") },
+                {112, new Program(112, "小林武") },
             };
 
         }
