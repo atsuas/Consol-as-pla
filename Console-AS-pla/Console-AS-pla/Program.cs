@@ -9,13 +9,19 @@ namespace AS
     {
         static void Main(string[] args)
         {
-            //要素の追加
-            flowerDict["violet"] = 600;
-            employeeDict = new employee(130, "鈴木敬之");
+            //ディクショナリから要素を取り出す
+            int price = flowerDict["rose"];
 
-            //Addでも追加できる
-            flowerDict.Add("violet", 600);
-            employeeDict.Add(130, "鈴木敬之");
+            var employee = employee[125];
+
+            //ディクショナリにキーが存在するか確かめる
+            var key = "pansy";
+            if (flowerDict.ContainsKey(key))
+            {
+                var price = flowerDict[key];
+                //priceに関する処理
+
+            }
 
         }
 
