@@ -9,46 +9,26 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var text = "Cozy lummox gives smart squid who asks for job pen";
-            Exercise1_1(text);
-            Console.WriteLine();
-            Exercise1_2(text);
+            var line = "Novelist=谷崎潤一郎;BestWork=春琴抄;Born=1886";
+            foreach (var pair in line.Split(';'))
+            {
+                var array = pair.Split('=');
+                Console.WriteLine("{0}:{1}", ToJapanese(array[0]), array[1]);
+            }
         }
 
-        static void Exercise1_1(string text)
+        static string ToJapanese(string key)
         {
-            var dict = new Dictionary<Char, int>();
-            foreach (var c in text)
+            switch (key)
             {
-                var uc = char.ToUpper(c);
-                if ('A' <= uc && uc <= 'Z')
-                {
-                    if (dict.ContainsKey(uc))
-                        dict[uc]++;
-                    else
-                        dict[uc] = 1;
-                }
+                case "Novelist":
+                    return "作家　";
+                case "BestWork":
+                    return "代表作";
+                case "Born":
+                    return "誕生年";
             }
-            foreach (var item in dict.OrderBy(x => x.Key))
-                Console.WriteLine("{0}:{1}", item.Key, item.Value);
-        }
-
-        static void Exercise1_2(string text)
-        {
-            var dict = new SortedDictionary<Char, int>();
-            foreach (var c in text)
-            {
-                var uc = char.ToUpper(c);
-                if ('A' <= uc && uc <= 'Z')
-                {
-                    if (dict.ContainsKey(uc))
-                        dict[uc]++;
-                    else
-                        dict[uc] = 1;
-                }
-            }
-            foreach (var item in dict)
-                Console.WriteLine("{0}:{1}", item.Key, item.Value);
+            throw new ArgumentException("引数keyは、正しい値ではありません");
         }
     }
 }
