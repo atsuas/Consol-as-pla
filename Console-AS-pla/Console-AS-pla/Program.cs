@@ -9,13 +9,14 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var line = Console.ReadLine();
-            var price = int.Parse(line);
-            if (price >= 0)
-            {
-                var totalprice = price * 1.1;
-                Console.WriteLine($"{totalprice:0}");
-            }
+            var a = 10;
+            var b = 30;
+            Console.WriteLine($"{a} {b}");
+            var th = a;
+            a = b;
+            b = th;
+            Console.WriteLine($"{a} {b}");
+
 
         }
 
