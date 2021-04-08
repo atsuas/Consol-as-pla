@@ -9,16 +9,21 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            string[] names = { "C#", "Ruby", "Kotlin", "Swift", "Python", "Java", "PHP" };
+            var array2d = new string[,]
+            {
+               { "sun" , "日曜日" },
+                { "mon" , "月曜日" },
+                { "tue" , "火曜日" },
+                { "wed" , "水曜日" },
+                { "thu" , "木曜日" },
+                { "fri" , "金曜日" },
+                { "sat" , "土曜日" }
+            };
 
-            One(names);
-            
-        }
-
-        public static void One(string[] names)
-        {
-            var name = names.Max(x => x.Length);
-            Console.WriteLine(name);
+            for (int row = 0; row < array2d.GetLength(0); row++)
+            {
+                Console.WriteLine($"{array2d[row, 1]} {array2d[row, 0]}");
+            }
         }
 
     }
