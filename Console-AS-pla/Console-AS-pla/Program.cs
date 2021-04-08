@@ -9,43 +9,30 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var dict = new Dictionary<MonthDay, string>
+            var text = "Cozy lummox gives smart squid who asks for job pen";
+            One(text);
+            Console.WriteLine();
+
+
+        }
+
+        static void One(string text)
+        {
+            var dict = new Dictionary<Char, int>();
+            foreach (var c in text)
             {
-                { new MonthDay(3, 5), "珊瑚の日" },
-                { new MonthDay(8, 4), "箸の日" },
-                { new MonthDay(10, 3), "登山の日" },
-            };
-
-            var md = new MonthDay(8, 4);
-            var s = dict[md];
-            Console.WriteLine(s);
-
-        }
-
-    }
-
-    class MonthDay
-    {
-        public int Day { get; private set; }
-        public int Month { get; private set; }
-        public MonthDay(int month, int day)
-        {
-            this.Month = month;
-            this.Day = day;
-        }
-
-
-        public override bool Equals(object obj)
-        {
-            var other = obj as MonthDay;
-            if (other == null)
-                throw new ArgumentException();
-            return this.Day == other.Day && this.Month == other.Month;
-        }
-
-        public override int GetHashCode()
-        {
-            return Month.GetHashCode() * 31 + Day.GetHashCode();
+                var uc = char.ToUpper(c);
+                if ('A' <= uc && uc <= 'Z')
+                {
+                    if (dict.ContainsKey(uc))
+                        dict[uc]++;
+                    else
+                        dict[uc] = 1;
+                }
+            }
+            foreach (var item in dict.OrderBy(x => x.Key))
+            Console.WriteLine($"{item.Key} : {item.Value}");
+            
         }
     }
 }
