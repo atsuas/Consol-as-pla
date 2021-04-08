@@ -9,19 +9,43 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            //ディクショナリから全ての要素を取り出す
-            foreach (var item in flowerDict)
-                Console.WriteLine($"{item.Key} {item.Value}");
-
-            var average = flowerDict.Average(x => x.value);
-
-            foreach (var key in flowerDict.Keys)
+            var dict = new Dictionary<MonthDay, string>
             {
-                Console.WriteLine(key);
-            }
+                { new MonthDay(3, 5), "珊瑚の日" },
+                { new MonthDay(8, 4), "箸の日" },
+                { new MonthDay(10, 3), "登山の日" },
+            };
 
+            var md = new MonthDay(8, 4);
+            var s = dict[md];
+            Console.WriteLine(s);
 
         }
 
+    }
+
+    class MonthDay
+    {
+        public int Day { get; private set; }
+        public int Month { get; private set; }
+        public MonthDay(int month, int day)
+        {
+            this.Month = month;
+            this.Day = day;
+        }
+
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as MonthDay;
+            if (other == null)
+                throw new ArgumentException();
+            return this.Day == other.Day && this.Month == other.Month;
+        }
+
+        public override int GetHashCode()
+        {
+            return Month.GetHashCode() * 31 + Day.GetHashCode();
+        }
     }
 }
