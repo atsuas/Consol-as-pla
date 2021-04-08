@@ -9,50 +9,45 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var text = "Cozy lummox gives smart squid who asks for job pen";
-            One(text);
-            Console.WriteLine();
-            Two(text);
-
+           
 
         }
 
-        static void One(string text)
+        
+    }
+
+    class Abbreviations
+    {
+        private Dictionary<string, string> _dict = new Dictionary<string, string>();
+
+        public Abbreviations()
         {
-            var dict = new Dictionary<Char, int>();
-            foreach (var c in text)
-            {
-                var uc = char.ToUpper(c);
-                if ('A' <= uc && uc <= 'Z')
-                {
-                    if (dict.ContainsKey(uc))
-                        dict[uc]++;
-                    else
-                        dict[uc] = 1;
-                }
-            }
-            foreach (var item in dict.OrderBy(x => x.Key))
-            Console.WriteLine($"{item.Key} : {item.Value}");
-            
+            var lines = File.ReadLines("Abbreviations.txt");
+            _dict = lines.Select(line => line.Split('='))
+                         .ToDictionary(x => x[0], x => x[1]);
         }
 
-        static void Two(string text)
+        public void Add(string abbr, string japanese)
         {
-            var dict = new SortedDictionary<Char, int>();
-            foreach (var c in text)
+            _dict[abbr] = japanese;
+        }
+
+        public string this [string abbr]
+        {
+            get
             {
-                var uc = char.ToUpper(c);
-                if ('A' <= uc && uc <= 'Z')
-                {
-                    if (dict.ContainsKey(uc))
-                        dict[uc]++;
-                    else
-                        dict[uc] = 1;
-                }
+                return _dict.ContainsKey(abbr) ? _dict[abbr] : null;
             }
-            foreach (var item in dict.OrderBy(x => x.Key))
-                Console.WriteLine($"{item.Key} : {item.Value}");
-            
+        }
+
+        public string ToAbbreviation(string japanese)
+        {
+            return _dict.FirstOrDefault(x => x.Value == japanese).Key;
+        }
+
+        public IEnumerable<KeyValuePair<string, string>> FindAll(string substring)
+        {
+
         }
     }
 }
