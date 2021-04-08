@@ -9,15 +9,16 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var a = 10;
-            var b = 30;
-            Console.WriteLine($"{a} {b}");
-            var th = a;
-            a = b;
-            b = th;
-            Console.WriteLine($"{a} {b}");
+            string[] names = { "C#", "Ruby", "Kotlin", "Swift", "Python", "Java", "PHP" };
 
+            One(names);
+            
+        }
 
+        public static void One(string[] names)
+        {
+            var name = names.Max(x => x.Length);
+            Console.WriteLine(name);
         }
 
     }
