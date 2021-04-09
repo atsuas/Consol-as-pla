@@ -9,17 +9,19 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var lines = new[] { "=====", "今日の夢", "大阪の夢", };
             var filePath = @"C:\Example\Greeting.txt";
-            using (var writer = new StreamWriter(filePath, append:true))
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
             {
-                foreach (var item in lines)
+                using (var reader = new StreamReader(stream))
+                using (var writer = new StreamWriter(stream))
                 {
-                    writer.WriteLine(item);
+                    string texts = reader.ReadToEnd();
+                    stream.Position = 0;
+                    writer.WriteLine("挿入する新しい行1");
+                    writer.WriteLine("挿入する新しい行2");
+                    writer.Write(texts);
                 }
             }
-         
-
         }
 
     }
