@@ -9,11 +9,14 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
+            var lines = new[] { "=====", "今日の夢", "大阪の夢", };
             var filePath = @"C:\Example\Greeting.txt";
-            using (var writer = new StreamWriter(filePath))
+            using (var writer = new StreamWriter(filePath, append:true))
             {
-                writer.WriteLine("いろはにほへと　ちりぬるを");
-                writer.WriteLine("わがよたれぞ　つねならむ");
+                foreach (var item in lines)
+                {
+                    writer.WriteLine(item);
+                }
             }
          
 
