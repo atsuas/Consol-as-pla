@@ -10,17 +10,12 @@ namespace Exercise1
         static void Main(string[] args)
         {
             var filePath = @"C:\Example\Greeting.txt";
-            if (File.Exists(filePath))
+            var lines = File.ReadAllLines(filePath, Encoding.UTF8);
+            foreach (var line in lines)
             {
-                using (var reader = new StreamReader(filePath, Encoding.UTF8))
-                {
-                    while (!reader.EndOfStream)
-                    {
-                        var line = reader.ReadLine();
-                        Console.WriteLine(line);
-                    }
-                }
+                Console.WriteLine(line);
             }
+         
 
         }
 
