@@ -10,10 +10,10 @@ namespace Exercise1
         static void Main(string[] args)
         {
             var filePath = @"C:\Example\Greeting.txt";
-            var lines = File.ReadAllLines(filePath, Encoding.UTF8);
-            foreach (var line in lines)
+            using (var writer = new StreamWriter(filePath))
             {
-                Console.WriteLine(line);
+                writer.WriteLine("いろはにほへと　ちりぬるを");
+                writer.WriteLine("わがよたれぞ　つねならむ");
             }
          
 
