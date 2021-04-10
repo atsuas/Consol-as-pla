@@ -9,13 +9,12 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var workdir = Directory.GetCurrentDirectory();
-            Console.WriteLine(workdir);
-
-            Directory.SetCurrentDirectory(@"C:\TEMP");
-
-            var newWorkdir = Directory.GetCurrentDirectory();
-            Console.WriteLine(newWorkdir);
+            var di = new DirectoryInfo(@"C:\Example");
+            DirectoryInfo[] directories = di.GetDirectories();
+            foreach (var dinfo in directories)
+            {
+                Console.WriteLine(dinfo.FullName);
+            }
         }
 
     }
