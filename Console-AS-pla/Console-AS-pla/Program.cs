@@ -10,7 +10,7 @@ namespace Exercise1
         static void Main(string[] args)
         {
             var di = new DirectoryInfo(@"C:\Example");
-            DirectoryInfo[] directories = di.GetDirectories("*", SearchOption.AllDirectories);
+            var directories = di.EnumerateDirectories();
             foreach (var dinfo in directories)
             {
                 Console.WriteLine(dinfo.FullName);
