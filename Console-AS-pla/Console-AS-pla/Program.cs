@@ -9,8 +9,14 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var fi = new FileInfo(@"C:\Example\Greeting.txt");
-            FileInfo dup = fi.CopyTo(@"C:\Example\Target.txt", overwrite:true);
+            if (Directory.Exists(@"C:\Example"))
+            {
+                Console.WriteLine("存在しています");
+            }
+            else
+            {
+                Console.WriteLine("存在していません");
+            }
         }
 
     }
