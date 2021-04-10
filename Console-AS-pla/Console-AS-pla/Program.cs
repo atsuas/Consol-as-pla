@@ -9,8 +9,13 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var di = new DirectoryInfo(@"C:\Windows");
-            FileInfo[] files = di.GetFiles();
+            var di = new DirectoryInfo(@"C:\Example");
+            var files = di.EnumerateFiles("*.txt", SearchOption.AllDirectories)
+                          .Take(20);
+            foreach (var item in files)
+            {
+                Console.WriteLine($"{item.Name} {item.CreationTime}");
+            }
         }
 
     }
