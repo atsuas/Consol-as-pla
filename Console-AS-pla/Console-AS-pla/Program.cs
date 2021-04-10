@@ -9,11 +9,9 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            //指定したファイルがあるかどうか調べる
-            if (File.Exists(@"C:\Example\Greeting.txt"))
-            {
+            var fi = new FileInfo(@"C:\Example\Greeting.txt");
+            if (fi.Exists)
                 Console.WriteLine("既に存在しています");
-            }
         }
 
     }
