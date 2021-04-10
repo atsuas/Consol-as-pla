@@ -10,11 +10,13 @@ namespace Exercise1
         static void Main(string[] args)
         {
             var di = new DirectoryInfo(@"C:\Example");
-            var files = di.EnumerateFiles("*.txt", SearchOption.AllDirectories)
-                          .Take(20);
-            foreach (var item in files)
+            FileSystemInfo[] fileSystems = di.GetFileSystemInfos();
+            foreach (var item in fileSystems)
             {
-                Console.WriteLine($"{item.Name} {item.CreationTime}");
+                if ((item.Attributes & FileAttributes.Directory) == FileAttributes.Directory)
+                    Console.WriteLine($"ディレクトリ:{item.Name} {item.CreationTime}");
+                else
+                    Console.WriteLine($"ファイル:{item.Name} {item.CreationTime}");
             }
         }
 
