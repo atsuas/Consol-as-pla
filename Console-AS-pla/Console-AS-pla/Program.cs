@@ -9,14 +9,13 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            if (Directory.Exists(@"C:\Example"))
-            {
-                Console.WriteLine("存在しています");
-            }
-            else
-            {
-                Console.WriteLine("存在していません");
-            }
+            var workdir = Directory.GetCurrentDirectory();
+            Console.WriteLine(workdir);
+
+            Directory.SetCurrentDirectory(@"C:\TEMP");
+
+            var newWorkdir = Directory.GetCurrentDirectory();
+            Console.WriteLine(newWorkdir);
         }
 
     }
