@@ -9,12 +9,8 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var di = new DirectoryInfo(@"C:\Example");
-            var directories = di.EnumerateDirectories();
-            foreach (var dinfo in directories)
-            {
-                Console.WriteLine(dinfo.FullName);
-            }
+            var di = new DirectoryInfo(@"C:\Windows");
+            FileInfo[] files = di.GetFiles();
         }
 
     }
