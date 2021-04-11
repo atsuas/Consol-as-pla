@@ -9,15 +9,18 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var di = new DirectoryInfo(@"C:\Example");
-            FileSystemInfo[] fileSystems = di.GetFileSystemInfos();
-            foreach (var item in fileSystems)
-            {
-                if ((item.Attributes & FileAttributes.Directory) == FileAttributes.Directory)
-                    Console.WriteLine($"ディレクトリ:{item.Name} {item.CreationTime}");
-                else
-                    Console.WriteLine($"ファイル:{item.Name} {item.CreationTime}");
-            }
+            var path = @"C:\Program Files\Microsoft Office\Office16\EXCEL.EXE";
+            var directoryName = Path.GetDirectoryName(path);
+            var fileName = Path.GetFileName(path);
+            var exetension = Path.GetExtension(path);
+            var filenameWithoutExetension = Path.GetFileNameWithoutExtension(path);
+            var pathRoot = Path.GetPathRoot(path);
+
+            Console.WriteLine($"DirectionName: {directoryName}");
+            Console.WriteLine($"FileName: {fileName}");
+            Console.WriteLine($"Extension: {exetension}");
+            Console.WriteLine($"FilenameWithoutExteinsion: {filenameWithoutExetension}");
+            Console.WriteLine($"PathRoot: {pathRoot}");
         }
 
     }
