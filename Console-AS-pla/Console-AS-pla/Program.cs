@@ -9,7 +9,7 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var path = Path.Combine(dir, fname);
+            var tempFileName = Path.GetTempFileName();
         }
 
     }
