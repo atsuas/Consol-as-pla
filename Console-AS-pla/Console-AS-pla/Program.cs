@@ -9,18 +9,7 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var path = @"C:\Program Files\Microsoft Office\Office16\EXCEL.EXE";
-            var directoryName = Path.GetDirectoryName(path);
-            var fileName = Path.GetFileName(path);
-            var exetension = Path.GetExtension(path);
-            var filenameWithoutExetension = Path.GetFileNameWithoutExtension(path);
-            var pathRoot = Path.GetPathRoot(path);
-
-            Console.WriteLine($"DirectionName: {directoryName}");
-            Console.WriteLine($"FileName: {fileName}");
-            Console.WriteLine($"Extension: {exetension}");
-            Console.WriteLine($"FilenameWithoutExteinsion: {filenameWithoutExetension}");
-            Console.WriteLine($"PathRoot: {pathRoot}");
+            var path = Path.Combine(dir, fname);
         }
 
     }
