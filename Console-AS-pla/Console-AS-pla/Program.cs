@@ -9,7 +9,44 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var tempFileName = Path.GetTempFileName();
+            if (args.Length == 0)
+                return;
+            var file = args[0];
+
+            Console.WriteLine($"{Path.GetFullPath(file)}について調べます");
+            One(file);
+            Two(file);
+            Three(file);
+
+        }
+
+        private static void One(string file)
+        {
+            var count = 0;
+            using (var sr = new StreamReader(file))
+            {
+                while(!sr.EndOfStream)
+                {
+                    var line = sr.ReadLine();
+                    if (line.Contains("class"))
+                        count++;
+                }
+            }
+            Console.WriteLine(count);
+        }
+
+        private static void Two(string file)
+        {
+            var count = File.ReadAllLines(file)
+                            .Count(c => c.Contains("class"));
+            Console.WriteLine(count);
+        }
+
+        private static void Three(string file)
+        {
+            var count = File.ReadLines(file)
+                            .Count(c => c.Contains("class"));
+            Console.WriteLine(count);
         }
 
     }
