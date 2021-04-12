@@ -7,12 +7,20 @@ namespace Exercise1
 {
     class Program
     {
-        public string DefaultUrl { get; set; } = GetDefaultUrl();
-
         static void Main(string[] args)
         {
             
         }
 
+    }
+
+    class MySample
+    {
+        public IReadOnlyList<int> Mylist { get; private set; }
+
+        public MySample()
+        {
+            Mylist = new List<int>() { 1, 2, 3, 4, 5 };
+        }
     }
 }
