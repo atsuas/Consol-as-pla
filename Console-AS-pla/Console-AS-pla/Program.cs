@@ -9,17 +9,25 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            
+            if (args.Length <= 1)
+                return;
+            var file1 = args[0];
+            var file2 = args[1];
+            Concat(file1, file2);
+
+            Display(file1);
         }
 
-        public double Median(params double[] args)
+        private static void Concat(string file1, string file2)
         {
-            var sorted = args.OrderBy(n => n).ToArray();
-            int index = sorted.Length / 2;
-            if (sorted.Length % 2 = 0)
-                return ()
+            File.AppendAllLines(file1, File.ReadLines(file2));
         }
 
+        private static void Display(string outputPath)
+        {
+            var text = File.ReadAllText(outputPath);
+            Console.WriteLine(text);
+        }
     }
 
 }
