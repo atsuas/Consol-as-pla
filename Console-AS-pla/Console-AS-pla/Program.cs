@@ -7,9 +7,11 @@ namespace Exercise1
 {
     class Program
     {
+        public string DefaultUrl { get; set; } = GetDefaultUrl();
+
         static void Main(string[] args)
         {
-            return sale?.Product;
+            
         }
 
     }
