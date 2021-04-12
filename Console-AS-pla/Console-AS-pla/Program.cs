@@ -12,15 +12,14 @@ namespace Exercise1
             
         }
 
-    }
-
-    class MySample
-    {
-        public IReadOnlyList<int> Mylist { get; private set; }
-
-        public MySample()
+        public double Median(params double[] args)
         {
-            Mylist = new List<int>() { 1, 2, 3, 4, 5 };
+            var sorted = args.OrderBy(n => n).ToArray();
+            int index = sorted.Length / 2;
+            if (sorted.Length % 2 = 0)
+                return ()
         }
+
     }
+
 }
