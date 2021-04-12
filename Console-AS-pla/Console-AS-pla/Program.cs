@@ -9,7 +9,7 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var message = GetMessage(code) ?? GetMessage();
+            return sale?.Product;
         }
 
     }
