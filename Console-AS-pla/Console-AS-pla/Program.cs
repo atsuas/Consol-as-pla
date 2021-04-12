@@ -9,7 +9,7 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var num = list.Contains(key) ? 1 : 0;
+            var message = GetMessage(code) ?? GetMessage();
         }
 
     }
