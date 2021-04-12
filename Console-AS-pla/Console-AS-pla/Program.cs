@@ -9,37 +9,31 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            if (args.Length <= 1)
+            if (args.Length == 0)
                 return;
 
-            Console.WriteLine($"source: {Path.GetFullPath(args[0])}");
-            Console.WriteLine($"dest: {Path.GetFullPath(args[1])}\n");
-
-            var souceDir = args[0];
-            var destDir = args[1];
-            CopyFiles(souceDir, destDir);
+            var dir = args[0];
+            DisplayLargeFile(dir, 1 * 1024L * 1024L);
 
         }
 
-        private static void CopyFiles(string sourceDir, string destDir)
+        private static void DisplayLargeFile(string dir, long size)
         {
-            var files = Directory.EnumerateFiles("*.*");
-            if (!Directory.Exists(destDir))
-                Directory.CreateDirectory(destDir);
+            var files = Directory.EnumerateFiles(dir, "*.*", SearchOption.AllDirectories)
+                                 .Where(file => FileSize(file) >= size);
             foreach (var file in files)
             {
-                var dest = GetBakFilePath(destDir, file);
-                Console.WriteLine(dest);
-                File.Copy(file, dest, overwrite: true);
+                Console.WriteLine(file);
             }
+
         }
 
-        private static string GetBakFilePath(string destDir, string file)
+        private static long FileSize(string file)
         {
-            var name = Path.GetFileNameWithoutExtension(file) + "_bak";
-            var ext = Path.GetExtension(file);
-            return Path.Combine(destDir, name + ext);
+            var fi = new FileInfo(file);
+            return fi.Length;
         }
+
     }
 
 }
