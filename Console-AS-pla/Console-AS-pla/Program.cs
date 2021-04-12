@@ -9,11 +9,7 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            bool finish;
-            do
-            {
-                finish = Dosomething();
-            } while (!finish);
+            var num = list.Contains(key) ? 1 : 0;
         }
 
     }
