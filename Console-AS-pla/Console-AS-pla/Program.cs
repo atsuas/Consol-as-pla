@@ -13,7 +13,15 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            
+            var novelCollection = new NovelCollection
+            {
+                Novels = novels
+            };
+            using (var writer = XmlWriter.Create("novels.xml"))
+            {
+                var serializer = new XmlSerializer(novelCollection.GetType());
+                serializer.Serialize(writer, novelCollection);
+            }
         }
     }
 
