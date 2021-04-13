@@ -13,13 +13,13 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var sb = new StringBuilder();
-            using (var writer = XmlWriter.Create(sb))
+            using (var reader = XmlReader.Create("novel.xml"))
             {
-                var serializer = new XmlSerializer(novel.GetType());
-                serializer.Serialize(writer, novel);
+                var serializer = new XmlSerializer(typeof(Novel));
+                var novel = serializer.Deserialize(reader) as Novel;
+                Console.WriteLine(novel);
             }
-            var xmlText = sb.ToString();
+
         }
     }
 
