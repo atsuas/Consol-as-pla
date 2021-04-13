@@ -18,17 +18,11 @@ namespace Exercise1
     }
 
     [XmlRoot("novel")]
-    public class Novel
+    public class NovelCollection
     {
-        [XmlElement(ElementName = "title")]
-        public string Title { get; set; }
+        [XmlElement(Type = typeof(Novel), ElementName = "novel")]
+        public Novel[] Novels { get; set; }
 
-        [XmlElement(ElementName = "auther")]
-        public string Auther { get; set; }
-
-        [XmlElement(ElementName ="published")]
-        public int Published { get; set; }
-        
     }
 
 }
