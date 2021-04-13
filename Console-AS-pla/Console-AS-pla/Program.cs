@@ -4,6 +4,7 @@ using System.Linq;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace Exercise1
 {
@@ -11,14 +12,10 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            using (XmlReader reader = XmlReader.Create("novels.xml"))
+            using (var writer = XmlWriter.Create("novel.xml"))
             {
-                var serializer = new DataContractSerializer(typeof(Novel[]));
-                var novels = serializer.ReadObject(reader) as Novel[];
-                foreach (var novel in novels)
-                {
-                    Console.WriteLine(novel);
-                }
+                var serializer = new XmlSerializer(novel.GetType());
+                serializer.Serialize(writer, novel);
             }
         }
     }
