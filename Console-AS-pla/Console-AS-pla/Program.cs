@@ -13,26 +13,22 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            using (var reader = XmlReader.Create(new StringReader(xmlText)))
-            {
-                var serializer = new XmlSerializer(typeof(Novel));
-                var novel = serializer.Deserialize(reader) as Novel;
-                Console.WriteLine(novel);
-            }
-
+            
         }
     }
 
+    [XmlRoot("novel")]
     public class Novel
     {
+        [XmlElement(ElementName = "title")]
         public string Title { get; set; }
+
+        [XmlElement(ElementName = "auther")]
         public string Auther { get; set; }
-        [XmlIgnore]
+
+        [XmlElement(ElementName ="published")]
         public int Published { get; set; }
-        public override string ToString()
-        {
-            return base.ToString();
-        }
+        
     }
 
 }
