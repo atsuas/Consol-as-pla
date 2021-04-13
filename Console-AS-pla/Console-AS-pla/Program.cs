@@ -11,18 +11,16 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            using (var reader = XmlReader.Create("novel.xml"))
+            using (XmlReader reader = XmlReader.Create("novels.xml"))
             {
-
-
-                using (var writer = XmlWriter.Create("novel.xml"))
+                var serializer = new DataContractSerializer(typeof(Novel[]));
+                var novels = serializer.ReadObject(reader) as Novel[];
+                foreach (var novel in novels)
                 {
-                    var serializer = new DataContractSerializer(novels.GetType());
-                    serializer.WriteObject(writer, novels);
+                    Console.WriteLine(novel);
                 }
             }
         }
-
     }
 
 }
