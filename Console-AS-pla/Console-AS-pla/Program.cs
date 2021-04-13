@@ -11,14 +11,12 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            
-        }
-
-        public void writeLog(string fotmat, params object[] args)
-        {
-            var s = String.Format(fotmat, args);
-            //ログファイルへ出力する
-            WriteLine(s);
+            using (var reader = XmlReader.Create("novel.xml"))
+            {
+                var serializer = new DataContractSerializer(typeof(Novel));
+                var novel = serializer.ReadObject(reader) as Novel;
+                Console.WriteLine(novel);
+            }
         }
 
     }
