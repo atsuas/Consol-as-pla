@@ -23,4 +23,16 @@ namespace Exercise1
         }
     }
 
+    public class Novel
+    {
+        public string Title { get; set; }
+        public string Auther { get; set; }
+        [XmlIgnore]
+        public int Published { get; set; }
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+    }
+
 }
