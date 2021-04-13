@@ -13,9 +13,13 @@ namespace Exercise1
         {
             using (var reader = XmlReader.Create("novel.xml"))
             {
-                var serializer = new DataContractSerializer(typeof(Novel));
-                var novel = serializer.ReadObject(reader) as Novel;
-                Console.WriteLine(novel);
+
+
+                using (var writer = XmlWriter.Create("novel.xml"))
+                {
+                    var serializer = new DataContractSerializer(novels.GetType());
+                    serializer.WriteObject(writer, novels);
+                }
             }
         }
 
