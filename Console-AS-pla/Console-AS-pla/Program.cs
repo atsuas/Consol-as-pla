@@ -14,14 +14,11 @@ namespace Exercise1
             
         }
 
-        public double Median(params double[] args)
+        public void writeLog(string fotmat, params object[] args)
         {
-            var sorted = args.OrderBy(n => n).ToArray();
-            int index = sorted.Length / 2;
-            if (sorted.Length % 2 == 0)
-                return (sorted[index] + sorted[index - 1]) / 2;
-            else
-                return sorted[index];
+            var s = String.Format(fotmat, args);
+            //ログファイルへ出力する
+            WriteLine(s);
         }
 
     }
