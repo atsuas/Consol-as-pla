@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Text;
 
 namespace Exercise1
 {
@@ -12,11 +13,13 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            using (var writer = XmlWriter.Create("novel.xml"))
+            var sb = new StringBuilder();
+            using (var writer = XmlWriter.Create(sb))
             {
                 var serializer = new XmlSerializer(novel.GetType());
                 serializer.Serialize(writer, novel);
             }
+            var xmlText = sb.ToString();
         }
     }
 
