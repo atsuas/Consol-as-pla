@@ -13,7 +13,7 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            using (var reader = XmlReader.Create("novel.xml"))
+            using (var reader = XmlReader.Create(new StringReader(xmlText)))
             {
                 var serializer = new XmlSerializer(typeof(Novel));
                 var novel = serializer.Deserialize(reader) as Novel;
