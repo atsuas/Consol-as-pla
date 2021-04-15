@@ -13,14 +13,14 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            int height;
-            if (int.TryParse(str, out height))
+            var product = Session["MyProduct"] as Product;
+            if (product == null)
             {
-                //変換に成功した時の処理
+                //productが取得できなかった時の処理
             }
             else
             {
-                //変換に失敗した時の処理
+                //取得できた時の処理
             }
         }
 
