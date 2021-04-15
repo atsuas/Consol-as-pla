@@ -15,18 +15,34 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            byte[] byteAray = Encoding.UTF8.GetBytes(jsontext);
-            using (var stream = new MemoryStream(byteAray))
+            var abbreviationDict = new AbbreviatonDict
             {
-                var serializer = new DataContractJsonSerializer(typeof(Novel[]));
-                var novels = serializer.ReadObject(stream) as Novel[];
-                foreach (var novel in novels)
+                Abbreviations = new Dictionary<string, string>
                 {
-                    Console.WriteLine(novel);
+                    ["ODA"] = "政府開発援助",
+                    ["OECD"] = "経済協力開発機構",
+                    ["OPEC"] = "石油輸出国機構",
                 }
+            };
+            var settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true,
+            };
+            using (var stream = new FileStream("abbreviations.json", FileMode.Create, FileAccess.Write))
+            {
+                var serializer = new DataContractJsonSerializer(abbreviationDict.GetType(), settings);
+                serializer.WriteObject(stream, abbreviationDict);
             }
         }
 
     }
+
+    [DataContract]
+    public class AbbreviatonDict
+    {
+        [DataMember(Name = "abbrs")]
+        public Dictionary<string, string> Abbreviations { get; set; }
+    }
+
 
 }
