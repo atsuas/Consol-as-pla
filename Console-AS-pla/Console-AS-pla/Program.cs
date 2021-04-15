@@ -14,13 +14,9 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            if (str == String.Empty)
-                Console.WriteLine("空文字です");
-
-            if (String.IsNullOrWhiteSpace(str))
-            {
-
-            }
+            var target = "C# Programming";
+            var isExists = target.Any(c => Char.IsLower(c));
+            Console.WriteLine(isExists);
         }
 
     }
