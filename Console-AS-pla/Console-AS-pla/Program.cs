@@ -7,6 +7,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Text;
 using System.Globalization;
+using System.Runtime.Serialization.Json;
 
 namespace Exercise1
 {
@@ -14,7 +15,27 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            
+            var novels = new Novel[]
+            {
+                new Novel
+                {
+                    Auther = "アイザック",
+                    Title = "ロボット",
+                    Published = 1950,
+                },
+                new Novel
+                {
+                    Auther = "ジョージ",
+                    Title = "海賊船",
+                    Published = 1947,
+                },
+            };
+
+            using (var stream = new FileStream("novels.json", FileMode.Create, FileAccess.Write))
+            {
+                var serializer = new DataContractJsonSerializer(novels.GetType());
+                serializer.WriteObject(stream, novels);
+            }
         }
 
     }
