@@ -14,20 +14,17 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            
+            using (var reader = XmlReader.Create("novels.xml"))
+            {
+                var serializer = new XmlSerializer(typeof(NovelCollection));
+                var novels = serializer.Deserialize(reader) as NovelCollection;
+                foreach (var novel in novels.Novels)
+                {
+                    Console.WriteLine(novel);
+                }
+            }
         }
 
-    }
-
-    [XmlRoot("novelist")]
-    public class Novelist
-    {
-        [XmlElement(ElementName = "name")]
-        public string Name { get; set; }
-
-        [XmlArray("masterpieces")]
-        [XmlArrayItem("title", typeof(string))]
-        public string[] Masterpieces { get; set; }
     }
 
 }
