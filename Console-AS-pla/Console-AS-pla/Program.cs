@@ -13,15 +13,12 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var product = Session["MyProduct"] as Product;
-            if (product == null)
-            {
-                //productが取得できなかった時の処理
-            }
+            var str1 = "wow";
+            var str2 = "WOW";
+            if (String.Compare(str1, str2, true) == 0)
+                Console.WriteLine("等しい");
             else
-            {
-                //取得できた時の処理
-            }
+                Console.WriteLine("違う");
         }
 
     }
