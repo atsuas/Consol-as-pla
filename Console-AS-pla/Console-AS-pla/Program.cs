@@ -14,11 +14,20 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var target = "C# Programming";
-            var isExists = target.Any(c => Char.IsLower(c));
-            Console.WriteLine(isExists);
+            
         }
 
+    }
+
+    [XmlRoot("novelist")]
+    public class Novelist
+    {
+        [XmlElement(ElementName = "name")]
+        public string Name { get; set; }
+
+        [XmlArray("masterpieces")]
+        [XmlArrayItem("title", typeof(string))]
+        public string[] Masterpieces { get; set; }
     }
 
 }
