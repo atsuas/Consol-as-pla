@@ -15,7 +15,8 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            using (var stream = new FileStream("novels,json", FileMode.Open, FileAccess.Read))
+            byte[] byteAray = Encoding.UTF8.GetBytes(jsontext);
+            using (var stream = new MemoryStream(byteAray))
             {
                 var serializer = new DataContractJsonSerializer(typeof(Novel[]));
                 var novels = serializer.ReadObject(stream) as Novel[];
