@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Text;
+using System.Globalization;
 
 namespace Exercise1
 {
@@ -13,12 +14,11 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var str1 = "wow";
-            var str2 = "WOW";
-            if (String.Compare(str1, str2, true) == 0)
-                Console.WriteLine("等しい");
-            else
-                Console.WriteLine("違う");
+            var str1 = "カステラ";
+            var str2 = "かすてら";
+            var cultureInfo = new CultureInfo("ja-JP");
+            if (String.Compare(str1, str2, cultureInfo, CompareOptions.IgnoreKanaType) == 0)
+                Console.WriteLine("一致しています");
         }
 
     }
