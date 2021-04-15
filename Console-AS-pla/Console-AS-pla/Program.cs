@@ -14,16 +14,22 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            using (var reader = XmlReader.Create("novels.xml"))
-            {
-                var serializer = new XmlSerializer(typeof(NovelCollection));
-                var novels = serializer.Deserialize(reader) as NovelCollection;
-                foreach (var novel in novels.Novels)
-                {
-                    Console.WriteLine(novel);
-                }
-            }
+            
         }
+
+    }
+
+    [DataContract(Name = "novel")]
+    public class Novel
+    {
+        [DataMember(Name = "title")]
+        public string Title { get; set; }
+        
+        [DataMember(Name = "auther")]
+        public string Auther { get; set; }
+
+        [DataMember(Name = "published")]
+        public int Published { get; set; }
 
     }
 
