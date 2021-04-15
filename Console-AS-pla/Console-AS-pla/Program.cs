@@ -15,45 +15,16 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var novels = new Novel[]
+            using (var stream = new FileStream("novels,json", FileMode.Open, FileAccess.Read))
             {
-                new Novel
+                var serializer = new DataContractJsonSerializer(typeof(Novel[]));
+                var novels = serializer.ReadObject(stream) as Novel[];
+                foreach (var novel in novels)
                 {
-                    Auther = "アイザック",
-                    Title = "ロボット",
-                    Published = 1950,
-                },
-                new Novel
-                {
-                    Auther = "ジョージ",
-                    Title = "海賊船",
-                    Published = 1947,
-                },
-            };
-
-            using (var stream = MemoryStream())
-            {
-                var serializer = new DataContractJsonSerializer(novels.GetType());
-                serializer.WriteObject(stream, novels);
-                stream.Close();
-                var jsonText = Encoding.UTF8.GetString(stream.ToArray());
-                Console.WriteLine(jsonText);
+                    Console.WriteLine(novel);
+                }
             }
         }
-
-    }
-
-    [DataContract(Name = "novel")]
-    public class Novel
-    {
-        [DataMember(Name = "title")]
-        public string Title { get; set; }
-        
-        [DataMember(Name = "auther")]
-        public string Auther { get; set; }
-
-        [DataMember(Name = "published")]
-        public int Published { get; set; }
 
     }
 
