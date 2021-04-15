@@ -14,8 +14,13 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            if (String.IsNullOrEmpty(str))
-                Console.WriteLine("nullです");
+            if (str == String.Empty)
+                Console.WriteLine("空文字です");
+
+            if (String.IsNullOrWhiteSpace(str))
+            {
+
+            }
         }
 
     }
