@@ -31,10 +31,13 @@ namespace Exercise1
                 },
             };
 
-            using (var stream = new FileStream("novels.json", FileMode.Create, FileAccess.Write))
+            using (var stream = MemoryStream())
             {
                 var serializer = new DataContractJsonSerializer(novels.GetType());
                 serializer.WriteObject(stream, novels);
+                stream.Close();
+                var jsonText = Encoding.UTF8.GetString(stream.ToArray());
+                Console.WriteLine(jsonText);
             }
         }
 
