@@ -15,11 +15,8 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var target = "Novelist=坂本工事;BestWork=三木島さとし";
-            var value = "BestWork=";
-            var startIndex = target.IndexOf("BestWork=") + value.Length;
-            var endIndex = target.IndexOf(";", startIndex);
-            var bestWork = target.Substring(startIndex, endIndex - startIndex);
+            var nums = new List<int> { 1, 2, 3, 4, 5 };
+            nums.ForEach(n => Console.WriteLine($"{n}"));
         }
 
     }
