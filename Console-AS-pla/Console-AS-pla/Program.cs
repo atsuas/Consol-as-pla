@@ -15,8 +15,8 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var target = "1423836238";
-            var isAllDigits = target.All(c => Char.IsDigit(c));
+            var target = "Novelist=坂本工事;BestWork=三木島さとし";
+            var index = target.IndexOf("BestWork=");
         }
 
     }
