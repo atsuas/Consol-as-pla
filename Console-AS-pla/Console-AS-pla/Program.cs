@@ -15,20 +15,62 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var settings = new DataContractJsonSerializerSettings
+            
+        }
+
+        private static void One(string outfile)
+        {
+            var emp = new Employee
             {
-                UseSimpleDictionaryFormat = true,
+                Id = 123,
+                Name = "出井 秀行",
+                HireDate = new DateTime(2001, 5, 10)
             };
-            using (var stream = new FileStream("abbreviations.json", FileMode.Open, FileAccess.Read))
+            using (var writter = XmlWriter.Create("employee.xml"))
             {
-                var serializer = new DataContractJsonSerializer(typeof(Abbreviation.Dict), settings);
-                var dict = serializer.ReadObject(stream) as AbbreviationDict;
-                foreach (var item in dict.Abbreviations)
-                {
-                    Console.WriteLine($"{item.key} {item.value}");
-                }
+                var serializer = new XmlSerializer(emp.GetType());
+                serializer.Serialize(writter, emp);
             }
         }
+
+        private static void Two(string outfile)
+        {
+            var emp = new Employee[]
+            {
+                new Employee
+                {
+                     Id = 123,
+                    Name = "出井 秀行",
+                    HireDate = new DateTime(2001, 5, 10)
+                },
+                new Employee {
+                    Id = 139,
+                    Name = "大橋 孝仁",
+                    HireDate = new DateTime(2004, 12, 1)
+                },
+            };
+            var settings = new XmlWriterSettings
+            {
+                Encoding = new System.Text.UTF8Encoding(false),
+                Indent = true,
+                IndentChars = "  ",
+            };
+            using (var writter = XmlWriter.Create("employee.xml", settings))
+            {
+                var serializer = new DataContractSerializer(emp.GetType());
+                serializer.WriteObject(writter, emp);
+            }
+        }
+
+
+
+    }
+
+    public class Employee
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public DateTime HireDate { get; set; }
 
     }
 
