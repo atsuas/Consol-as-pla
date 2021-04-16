@@ -15,8 +15,9 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var nums = new List<int> { 1, 2, 3, 4, 5 };
-            nums.ForEach(n => Console.WriteLine($"{n}"));
+            var target = "  non-whitespace characters   ";
+            var replaced = target.Trim();
+            Console.WriteLine($"{replaced}");
         }
 
     }
