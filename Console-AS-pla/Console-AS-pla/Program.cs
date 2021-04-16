@@ -17,8 +17,9 @@ namespace Exercise1
         {
             var target = "Novelist=坂本工事;BestWork=三木島さとし";
             var value = "BestWork=";
-            var index = target.IndexOf("BestWork=") + value.Length;
-            var bestWork = target.Substring(index);
+            var startIndex = target.IndexOf("BestWork=") + value.Length;
+            var endIndex = target.IndexOf(";", startIndex);
+            var bestWork = target.Substring(startIndex, endIndex - startIndex);
         }
 
     }
