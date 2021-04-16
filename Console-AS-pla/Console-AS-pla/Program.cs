@@ -15,34 +15,10 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var abbreviationDict = new AbbreviatonDict
-            {
-                Abbreviations = new Dictionary<string, string>
-                {
-                    ["ODA"] = "政府開発援助",
-                    ["OECD"] = "経済協力開発機構",
-                    ["OPEC"] = "石油輸出国機構",
-                }
-            };
-            var settings = new DataContractJsonSerializerSettings
-            {
-                UseSimpleDictionaryFormat = true,
-            };
-            using (var stream = new FileStream("abbreviations.json", FileMode.Create, FileAccess.Write))
-            {
-                var serializer = new DataContractJsonSerializer(abbreviationDict.GetType(), settings);
-                serializer.WriteObject(stream, abbreviationDict);
-            }
+            var target = "1423836238";
+            var isAllDigits = target.All(c => Char.IsDigit(c));
         }
 
     }
-
-    [DataContract]
-    public class AbbreviatonDict
-    {
-        [DataMember(Name = "abbrs")]
-        public Dictionary<string, string> Abbreviations { get; set; }
-    }
-
 
 }
