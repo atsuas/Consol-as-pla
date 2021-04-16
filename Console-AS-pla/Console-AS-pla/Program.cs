@@ -16,7 +16,9 @@ namespace Exercise1
         static void Main(string[] args)
         {
             var target = "Novelist=坂本工事;BestWork=三木島さとし";
-            var index = target.IndexOf("BestWork=");
+            var value = "BestWork=";
+            var index = target.IndexOf("BestWork=") + value.Length;
+            var bestWork = target.Substring(index);
         }
 
     }
