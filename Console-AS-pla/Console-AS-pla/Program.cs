@@ -15,49 +15,62 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-           
+            var novelist = One("sample.xml");
+            Two(novelist, "novelist.json");
+
+            Console.WriteLine($"{novelist.Name} {novelist.Birth}");
+            foreach (var title in novelist.Masterpieces)
+            {
+                Console.WriteLine(title);
+            }
+
+            Console.WriteLine(File.ReadAllText("novelist.json"));
+
         }
 
-        private static void Three(string file)
+        static Novelist One(string file)
         {
-            using (XmlReader reader = XmlReader.Create(file))
+            using (var reader = XmlReader.Create(file))
             {
-                var serializer = new DataContractSerializer(typeof(Employee[]));
-                var emps = serializer.ReadObject(reader) as Employee[];
-                foreach (var emp in emps)
-                {
-                    Console.WriteLine($"{emp.Id} {emp.Name} {emp.HireName}");
-                }
+                var serializer = new XmlSerializer(typeof(Novelist));
+                var novelist = (Novelist)serializer.Deserialize(reader);
+
+                return novelist;
             }
         }
 
-        private static void Four(string file)
+        static void Two(Novelist novelist, string outfile)
         {
-            var emps = new Employee2[]
+            using (var stream = new FileStream(outfile, FileMode.Create, FileAccess.Write))
             {
-                 new Employee2 {
-                    Id = 123,
-                    Name = "出井 秀行",
-                    HireDate = new DateTime(2001, 5, 10)
-                },
-                new Employee2 {
-                    Id = 139,
-                    Name = "大橋 孝仁",
-                    HireDate = new DateTime(2004, 12, 1)
-                },
-            };
-            using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
-            {
-                var serializer = new DataContractJsonSerializer
-                    (emps.GetType(),
+                var serializer = new DataContractJsonSerializer(novelist.GetType(),
                     new DataContractJsonSerializerSettings
                     {
                         DateTimeFormat = new DateTimeFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                    }
-                    );
-                serializer.WriteObject(stream, emps);
+                    });
+                serializer.WriteObject(stream, novelist);
             }
         }
+
+    }
+
+    [XmlRoot("novelist")]
+    [DataContract]
+    public class Novelist
+    {
+        [XmlElement(ElementName = "name")]
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        [XmlElement(ElementName = "birth")]
+        [DataMember(Name = "birth")]
+        public DateTime Birth { get; set; }
+
+        [XmlArray("masterpieces")]
+        [XmlArrayItem("title", typeof(string))]
+        [DataMember(Name = "masterpieces")]
+        public string[] Masterpieces { get; set; }
+
 
     }
 
