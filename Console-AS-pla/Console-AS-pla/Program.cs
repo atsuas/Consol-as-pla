@@ -15,8 +15,8 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var target = "012345";
-            var result = target.Insert(2, "abc");
+            var target = "I hope";
+            var replaced = target.Replace("hope", "wish");
         }
 
     }
