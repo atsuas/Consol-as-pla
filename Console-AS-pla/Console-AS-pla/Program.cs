@@ -15,8 +15,8 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var target = "I hope";
-            var replaced = target.Replace("hope", "wish");
+            var target = "The quick";
+            var replaced = target.ToUpper();
         }
 
     }
