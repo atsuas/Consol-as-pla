@@ -16,8 +16,9 @@ namespace Exercise1
         static void Main(string[] args)
         {
             var text = "the quick fox the";
-            string[] words = text.Split(' ');
-            Console.WriteLine(words);
+            var words = text.Split(new[] { ' ', '.' },
+                StringSplitOptions.RemoveEmptyEntries);
+            
         }
 
     }
