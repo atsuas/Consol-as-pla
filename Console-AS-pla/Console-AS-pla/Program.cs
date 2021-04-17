@@ -31,6 +31,34 @@ namespace Exercise1
             }
         }
 
+        private static void Four(string file)
+        {
+            var emps = new Employee2[]
+            {
+                 new Employee2 {
+                    Id = 123,
+                    Name = "出井 秀行",
+                    HireDate = new DateTime(2001, 5, 10)
+                },
+                new Employee2 {
+                    Id = 139,
+                    Name = "大橋 孝仁",
+                    HireDate = new DateTime(2004, 12, 1)
+                },
+            };
+            using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+            {
+                var serializer = new DataContractJsonSerializer
+                    (emps.GetType(),
+                    new DataContractJsonSerializerSettings
+                    {
+                        DateTimeFormat = new DateTimeFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                    }
+                    );
+                serializer.WriteObject(stream, emps);
+            }
+        }
+
     }
 
 }
