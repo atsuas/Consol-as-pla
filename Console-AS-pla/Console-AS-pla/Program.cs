@@ -15,8 +15,8 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var target = "01234567AB78";
-            var result = target.Remove(5, 3);
+            var target = "012345";
+            var result = target.Insert(2, "abc");
         }
 
     }
