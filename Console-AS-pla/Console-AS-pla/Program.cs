@@ -15,7 +15,10 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            
+            var price = Library.Books
+                               .Where(b => b.CategoriId == 1)
+                               .Max(b => b.Price);
+            Console.WriteLine(price);
         }
 
     }
