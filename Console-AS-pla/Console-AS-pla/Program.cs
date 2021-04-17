@@ -15,10 +15,20 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var text = "the quick fox the";
-            var words = text.Split(new[] { ' ', '.' },
-                StringSplitOptions.RemoveEmptyEntries);
-            
+           
+        }
+
+        private static void Three(string file)
+        {
+            using (XmlReader reader = XmlReader.Create(file))
+            {
+                var serializer = new DataContractSerializer(typeof(Employee[]));
+                var emps = serializer.ReadObject(reader) as Employee[];
+                foreach (var emp in emps)
+                {
+                    Console.WriteLine($"{emp.Id} {emp.Name} {emp.HireName}");
+                }
+            }
         }
 
     }
