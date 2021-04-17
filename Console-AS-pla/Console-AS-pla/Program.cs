@@ -15,8 +15,10 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var target = "The quick";
-            var replaced = target.ToUpper();
+            var languages = new[] { "C#", "java" };
+            var separator = ", ";
+            var result = string.Join(separator, languages);
+            Console.WriteLine(result);
         }
 
     }
