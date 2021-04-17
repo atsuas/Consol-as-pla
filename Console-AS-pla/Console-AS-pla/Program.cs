@@ -15,63 +15,42 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var novelist = One("sample.xml");
-            Two(novelist, "novelist.json");
-
-            Console.WriteLine($"{novelist.Name} {novelist.Birth}");
-            foreach (var title in novelist.Masterpieces)
-            {
-                Console.WriteLine(title);
-            }
-
-            Console.WriteLine(File.ReadAllText("novelist.json"));
-
-        }
-
-        static Novelist One(string file)
-        {
-            using (var reader = XmlReader.Create(file))
-            {
-                var serializer = new XmlSerializer(typeof(Novelist));
-                var novelist = (Novelist)serializer.Deserialize(reader);
-
-                return novelist;
-            }
-        }
-
-        static void Two(Novelist novelist, string outfile)
-        {
-            using (var stream = new FileStream(outfile, FileMode.Create, FileAccess.Write))
-            {
-                var serializer = new DataContractJsonSerializer(novelist.GetType(),
-                    new DataContractJsonSerializerSettings
-                    {
-                        DateTimeFormat = new DateTimeFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                    });
-                serializer.WriteObject(stream, novelist);
-            }
+            
         }
 
     }
 
-    [XmlRoot("novelist")]
-    [DataContract]
-    public class Novelist
+    public class Category
     {
-        [XmlElement(ElementName = "name")]
-        [DataMember(Name = "name")]
+        public int Id { get; set; }
         public string Name { get; set; }
+        public override string ToString()
+        {
+            return $"Id:{Id}, カテゴリ名:{Name}";
+        }
+    }
 
-        [XmlElement(ElementName = "birth")]
-        [DataMember(Name = "birth")]
-        public DateTime Birth { get; set; }
+    public class Book
+    {
+        public string Title { get; set; }
+        public int Price { get; set; }
+        public int CategoriId { get; set; }
+        public int PublishedYear { get; set; }
+        public override string ToString()
+        {
+            return $"発行年:{PublishedYear}, カテゴリ:{CategoriId}, 価格:{Price}, タイトル:{Title}";
+        }
+    }
 
-        [XmlArray("masterpieces")]
-        [XmlArrayItem("title", typeof(string))]
-        [DataMember(Name = "masterpieces")]
-        public string[] Masterpieces { get; set; }
+    public static class Library
+    {
+        public static IEnumerable<Category> Categories { get; private set; }
+        public static IEnumerable<Book> Books { get; private set; }
 
+        static Library()
+        {
 
+        }
     }
 
 }
