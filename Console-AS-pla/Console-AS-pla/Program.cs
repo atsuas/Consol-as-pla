@@ -15,10 +15,9 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var languages = new[] { "C#", "java" };
-            var separator = ", ";
-            var result = string.Join(separator, languages);
-            Console.WriteLine(result);
+            var text = "the quick fox the";
+            string[] words = text.Split(' ');
+            Console.WriteLine(words);
         }
 
     }
