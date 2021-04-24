@@ -15,46 +15,18 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var min = Library.Books
-                             .Min(x => x.Title.Length);
-            var book = Library.Books
-                              .First(b => b.Title.Length == min);
-            Console.WriteLine(book);
+            var s1 = Console.ReadLine();
+            var s2 = Console.ReadLine();
+            if (string.Compare(s1, s2, ignoreCase:true) == 0)
+            {
+                Console.WriteLine("等しい");
+            }
+            else
+            {
+                Console.WriteLine("等しくない");
+            }
         }
 
-    }
-
-    public class Category
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public override string ToString()
-        {
-            return $"Id:{Id}, カテゴリ名:{Name}";
-        }
-    }
-
-    public class Book
-    {
-        public string Title { get; set; }
-        public int Price { get; set; }
-        public int CategoriId { get; set; }
-        public int PublishedYear { get; set; }
-        public override string ToString()
-        {
-            return $"発行年:{PublishedYear}, カテゴリ:{CategoriId}, 価格:{Price}, タイトル:{Title}";
-        }
-    }
-
-    public static class Library
-    {
-        public static IEnumerable<Category> Categories { get; private set; }
-        public static IEnumerable<Book> Books { get; private set; }
-
-        static Library()
-        {
-
-        }
     }
 
 }
