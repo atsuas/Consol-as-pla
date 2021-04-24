@@ -16,15 +16,16 @@ namespace Exercise1
         static void Main(string[] args)
         {
             var s1 = Console.ReadLine();
-            var s2 = Console.ReadLine();
-            if (string.Compare(s1, s2, ignoreCase:true) == 0)
+            int num;
+            if (int.TryParse(s1, out num))
             {
-                Console.WriteLine("等しい");
+                Console.WriteLine("{0:#,#}", num);
             }
             else
             {
-                Console.WriteLine("等しくない");
+                Console.WriteLine("数字文字列ではありません");
             }
+
         }
 
     }
