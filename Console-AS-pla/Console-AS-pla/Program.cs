@@ -15,19 +15,46 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var s1 = Console.ReadLine();
-            int num;
-            if (int.TryParse(s1, out num))
-            {
-                Console.WriteLine("{0:#,#}", num);
-            }
-            else
-            {
-                Console.WriteLine("数字文字列ではありません");
-            }
+            var text = "Jackdaws love my big sphinx of quartz";
+
+            One(text);
+
+            Two(text);
+
+            Three(text);
+
+            Four(text);
+
 
         }
 
+        private static void One(string text)
+        {
+            var non = text.Count(s => s == ' ');
+            Console.WriteLine(non);
+        }
+
+        private static void Two(string text)
+        {
+            var replaced = text.Replace("big", "small");
+            Console.WriteLine(replaced);
+        }
+
+        private static void Three(string text)
+        {
+            var count = text.Split(' ').Length;
+            Console.WriteLine(count);
+        }
+
+        private static void Four(string text)
+        {
+            var four = text.Split(' ')
+                           .Where(s => s.Length <= 4);
+            foreach (var item in four)
+            {
+                Console.WriteLine(item);
+            }
+        }
     }
 
 }
