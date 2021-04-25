@@ -15,46 +15,33 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var text = "Jackdaws love my big sphinx of quartz";
+            // コンストラクタ呼び出し
+            var abbrs = new Abbreviations();
 
-            One(text);
+            // Addメソッドの呼び出し例
+            abbrs.Add("IOC", "国際オリンピック委員会");
+            abbrs.Add("NPT", "核拡散防止条約");
 
-            Two(text);
+            // 7.2.3 (Countの呼び出し例)
+            // 上のAddメソッドで、２つのオブジェクトを追加しているので、読み込んだ単語数+2が、Countの値になる。
+            var count = abbrs.Count;
+            Console.WriteLine(abbrs.Count);
+            Console.WriteLine();
 
-            Three(text);
+            // 7.2.3 (Removeの呼び出し例)
+            if (abbrs.Remove("NPT"))
+                Console.WriteLine(abbrs.Count);
+            if (!abbrs.Remove("NPT"))
+                Console.WriteLine("削除できません");
+            Console.WriteLine();
 
-            Four(text);
-
+            // 7.2.4
+            // IEnumerable<> を実装したので、LINQが使える。
+            foreach (var item in abbrs.Where(x => x.Key.Length == 3))
+                Console.WriteLine("{0}={1}", item.Key, item.Value);
 
         }
 
-        private static void One(string text)
-        {
-            var non = text.Count(s => s == ' ');
-            Console.WriteLine(non);
-        }
-
-        private static void Two(string text)
-        {
-            var replaced = text.Replace("big", "small");
-            Console.WriteLine(replaced);
-        }
-
-        private static void Three(string text)
-        {
-            var count = text.Split(' ').Length;
-            Console.WriteLine(count);
-        }
-
-        private static void Four(string text)
-        {
-            var four = text.Split(' ')
-                           .Where(s => s.Length <= 4);
-            foreach (var item in four)
-            {
-                Console.WriteLine(item);
-            }
-        }
     }
 
 }
