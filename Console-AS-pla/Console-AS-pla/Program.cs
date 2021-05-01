@@ -15,26 +15,38 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var tw = new TimeWatch();
-            tw.Start();
-            Thread.Sleep(1000);
-            TimeSpan duration = tw.Stop();
-            Console.WriteLine("処理時間は{0}ミリ秒でした", duration.TotalMilliseconds);
+            if (args.Length <= 1)
+                return;
+
+            // これは確認用
+            Console.WriteLine($"source: {Path.GetFullPath(args[0])}");
+            Console.WriteLine($"dest:   {Path.GetFullPath(args[1])}\n");
+            // ここまで
+
+            var sourceDir = args[0];
+            var destDir = args[1];
+            CopyFiles(sourceDir, destDir);
         }
 
-    }
-
-    class TimeWatch
-    {
-        private DateTime _time;
-        public void Start()
+        private static void CopyFiles(string sourceDir, string destDir)
         {
-            _time = DateTime.Now;
+            var files = Directory.EnumerateFiles(sourceDir, "*.*");
+            if (!Directory.Exists(destDir))
+                Directory.CreateDirectory(destDir);
+            foreach (var file in files)
+            {
+                var dest = GetBakFilePath(destDir, file);
+                Console.WriteLine(dest);
+                File.Copy(file, dest, overwrite: true);
+            }
         }
 
-        public TimeSpan Stop()
+        private static string GetBakFilePath(string destDir, string file)
         {
-            return DateTime.Now - _time;
+            var name = Path.GetFileNameWithoutExtension(file) + "_bak";
+            var ext = Path.GetExtension(file);
+            // 拡張子がないファイルの場合、extは"" なので、無条件にextを追加してもうまくいく
+            return Path.Combine(destDir, name + ext);
         }
     }
 
