@@ -15,18 +15,29 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var line = Console.ReadLine();
-            int num;
-            if (int.TryParse(line, out num))
-            {
-                Console.WriteLine("{0:#,#}", num);
-            }
-            else
-            {
-                Console.WriteLine("数値文字列でありません");
-            }
+            if (args.Length == 0)
+                return;
+            var file = args[0];
+            var outputPath = Numbering(file);
+
+            Display(outputPath);
         }
 
+        private static string Numbering(string file)
+        {
+            var lines = File.ReadLines(file)
+                            .Select((s, n) => string.Format("{0,4}: {1}", n + 1, s));
+            var path = Path.ChangeExtension(file, ".txt");
+            File.WriteAllLines(path, lines);
+            return path;
+        }
+
+        // 確認用コード
+        private static void Display(string outputPath)
+        {
+            var text = File.ReadAllText(outputPath);
+            Console.WriteLine(text);
+        }
     }
 
 }
