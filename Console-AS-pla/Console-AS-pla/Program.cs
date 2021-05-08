@@ -1,61 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise2
+namespace Exercise1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var names = new List<string> {
-                 "Tokyo", "New Delhi", "Bangkok", "London", "Paris", "Berlin", "Canberra", "Hong Kong",
-            };
-            Exercise2_1(names);
+            var text = "Cozy lummox gives smart squid who asks for job pen";
+            Exercise1_1(text);
             Console.WriteLine();
-            Exercise2_2(names);
-            Console.WriteLine();
-            Exercise2_3(names);
-            Console.WriteLine();
-            Exercise2_4(names);
+            Exercise1_2(text);
         }
 
-        static void Exercise2_1(List<string> names)
+        static void Exercise1_1(string text)
         {
-            Console.WriteLine("都市名を入力。空行で終了");
-            do
+            var dict = new Dictionary<Char, int>();
+            foreach (var c in text)
             {
-                var line = Console.ReadLine();
-                if (string.IsNullOrEmpty(line))
-                    break;
-                var index = names.FindIndex(s => s == line);
-                Console.WriteLine(index);
-            } while (true);
+                var uc = char.ToUpper(c);
+                if ('A' <= uc && uc <= 'Z')
+                {
+                    if (dict.ContainsKey(uc))
+                        dict[uc]++;
+                    else
+                        dict[uc] = 1;
+                }
+            }
+            foreach (var item in dict.OrderBy(x => x.Key))
+                Console.WriteLine("{0}:{1}", item.Key, item.Value);
         }
 
-        static void Exercise2_2(List<string> names)
+        static void Exercise1_2(string text)
         {
-            var count = names.Count(s => s.Contains('o'));
-            Console.WriteLine(count);
-        }
-
-        static void Exercise2_3(List<string> names)
-        {
-            var selected = names.Where(s => s.Contains('o'))
-                                .ToArray();
-            foreach (var name in selected)
-                Console.WriteLine(name);
-        }
-
-        static void Exercise2_4(List<string> names)
-        {
-            var selected = names.Where(s => s.StartsWith("B"))
-                                .Select(s => s.Length);
-            foreach (var length in selected)
-                Console.WriteLine(length);
+            var dict = new SortedDictionary<Char, int>();
+            foreach (var c in text)
+            {
+                var uc = char.ToUpper(c);
+                if ('A' <= uc && uc <= 'Z')
+                {
+                    if (dict.ContainsKey(uc))
+                        dict[uc]++;
+                    else
+                        dict[uc] = 1;
+                }
+            }
+            foreach (var item in dict)
+                Console.WriteLine("{0}:{1}", item.Key, item.Value);
         }
     }
 }
