@@ -4,52 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise1
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var text = "Cozy lummox gives smart squid who asks for job pen";
-            Exercise1_1(text);
+            // コンストラクタ呼び出し
+            var abbrs = new Abbreviations();
+
+            // Addメソッドの呼び出し例
+            abbrs.Add("IOC", "国際オリンピック委員会");
+            abbrs.Add("NPT", "核拡散防止条約");
+
+            // 7.2.3 (Countの呼び出し例)
+            // 上のAddメソッドで、２つのオブジェクトを追加しているので、読み込んだ単語数+2が、Countの値になる。
+            var count = abbrs.Count;
+            Console.WriteLine(abbrs.Count);
             Console.WriteLine();
-            Exercise1_2(text);
-        }
 
-        static void Exercise1_1(string text)
-        {
-            var dict = new Dictionary<Char, int>();
-            foreach (var c in text)
-            {
-                var uc = char.ToUpper(c);
-                if ('A' <= uc && uc <= 'Z')
-                {
-                    if (dict.ContainsKey(uc))
-                        dict[uc]++;
-                    else
-                        dict[uc] = 1;
-                }
-            }
-            foreach (var item in dict.OrderBy(x => x.Key))
-                Console.WriteLine("{0}:{1}", item.Key, item.Value);
-        }
+            // 7.2.3 (Removeの呼び出し例)
+            if (abbrs.Remove("NPT"))
+                Console.WriteLine(abbrs.Count);
+            if (!abbrs.Remove("NPT"))
+                Console.WriteLine("削除できません");
+            Console.WriteLine();
 
-        static void Exercise1_2(string text)
-        {
-            var dict = new SortedDictionary<Char, int>();
-            foreach (var c in text)
-            {
-                var uc = char.ToUpper(c);
-                if ('A' <= uc && uc <= 'Z')
-                {
-                    if (dict.ContainsKey(uc))
-                        dict[uc]++;
-                    else
-                        dict[uc] = 1;
-                }
-            }
-            foreach (var item in dict)
-                Console.WriteLine("{0}:{1}", item.Key, item.Value);
+            // 7.2.4
+            // IEnumerable<> を実装したので、LINQが使える。
+            foreach (var item in abbrs.Where(x => x.Key.Length == 3))
+                Console.WriteLine("{0}={1}", item.Key, item.Value);
         }
     }
 }
