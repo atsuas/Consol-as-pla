@@ -1,146 +1,62 @@
-﻿using Chapter15;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Exercise1
 {
     class Program
     {
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
-            Exercise1_2();
-            Console.WriteLine();
-            Exercise1_3();
-            Console.WriteLine();
-            Exercise1_4();
-            Console.WriteLine();
-            Exercise1_5();
-            Console.WriteLine();
-            Exercise1_6();
-            Console.WriteLine();
-            Exercise1_7();
-            Console.WriteLine();
-            Exercise1_8();
-
-            Console.ReadLine();
+            var dateTime = new DateTime(2019, 1, 15, 19, 48, 32);
+            DisplayDatePattern1(dateTime);
+            DisplayDatePattern2(dateTime);
+            DisplayDatePattern3(dateTime);
+            DisplayDatePattern3_2(dateTime);
         }
 
-        static void Exercise1_2()
+        private static void DisplayDatePattern1(DateTime dateTime)
         {
-            var max = Library.Books.Max(b => b.Price);
-            var book = Library.Books.First(b => b.Price == max);
-            Console.WriteLine(book);
+            // 2019/1/15 19:48 
+            var str = string.Format("{0:yyyy/M/d HH:mm}", dateTime);
+            Console.WriteLine(str);
+        }
+        private static void DisplayDatePattern2(DateTime dateTime)
+        {
+            // 2019年01月15日 19時48分32秒 
+            var str = dateTime.ToString("yyyy年MM月dd日 HH時mm分ss秒");
+            Console.WriteLine(str);
+        }
+        private static void DisplayDatePattern3(DateTime dateTime)
+        {
+            // 平成31年 1月15日(火曜日)
+            // 年も2桁固定で、ゼロサプレスする場合は、さらに工夫が必要
+            // DisplayDatePattern3_2 でその一例を示す。
+            var culture = new CultureInfo("ja-JP");
+            culture.DateTimeFormat.Calendar = new JapaneseCalendar();
+
+            var datestr = dateTime.ToString("ggyy", culture);
+            var dayOfWeek = culture.DateTimeFormat.GetDayName(dateTime.DayOfWeek);
+
+            var str = string.Format("{0}年{1,2}月{2,2}日({3})", datestr, dateTime.Month, dateTime.Day, dayOfWeek);
+            Console.WriteLine(str);
         }
 
-        static void Exercise1_3()
+        // 10章で説明する Regexクラスを利用し、ゼロサプレスすれば、目的の結果が得られる。
+        // 年も2桁固定で、ゼロサプレスできる。
+        private static void DisplayDatePattern3_2(DateTime dateTime)
         {
-            var query = Library.Books.GroupBy(b => b.PublishedYear)
-                               .Select(g => new { PublishedYear = g.Key, Count = g.Count() })
-                               .OrderBy(x => x.PublishedYear);
-            foreach (var item in query)
-            {
-                Console.WriteLine("{0}年 {1}冊", item.PublishedYear, item.Count);
-            }
-        }
-
-        static void Exercise1_4()
-        {
-            var query = Library.Books
-                               .Join(Library.Categories,
-                                    book => book.CategoryId,
-                                    category => category.Id,
-                                     (book, category) => new {
-                                         book.Title,
-                                         book.PublishedYear,
-                                         book.Price,
-                                         CategoryName = category.Name
-                                     })
-                               .OrderByDescending(x => x.PublishedYear)
-                               .ThenByDescending(x => x.Price);
-            foreach (var item in query)
-                Console.WriteLine("{0}年 {1}円 {2} ({3})",
-                                  item.PublishedYear,
-                                  item.Price,
-                                  item.Title,
-                                  item.CategoryName
-                                 );
-        }
-
-        static void Exercise1_5()
-        {
-            var query = Library.Books
-                               .Where(b => b.PublishedYear == 2016)
-                               .Join(
-                                   Library.Categories, book => book.CategoryId,
-                                   category => category.Id,
-                                   (book, category) => category.Name)
-                               .Distinct();
-            foreach (var name in query)
-                Console.WriteLine(name);
-        }
-
-        static void Exercise1_6()
-        {
-            var query = Library.Books
-                               .Join(Library.Categories,
-                                    book => book.CategoryId,
-                                    category => category.Id,
-                                     (book, category) => new {
-                                         book.Title,
-                                         book.PublishedYear,
-                                         book.Price,
-                                         CategoryName = category.Name
-                                     })
-                               .GroupBy(x => x.CategoryName)
-                               .OrderBy(x => x.Key);
-            foreach (var group in query)
-            {
-                Console.WriteLine("#{0}", group.Key);
-                foreach (var item in group)
-                {
-                    Console.WriteLine(" {0}",
-                                  item.Title,
-                                  item.PublishedYear,
-                                  item.Price
-                                 );
-                }
-            }
-        }
-
-        private static void Exercise1_7()
-        {
-            var catid = Library.Categories.Single(c => c.Name == "Development").Id;
-            var groups = Library.Books
-                                .Where(b => b.CategoryId == catid)
-                                .GroupBy(b => b.PublishedYear)
-                                .OrderBy(b => b.Key);
-            foreach (var group in groups)
-            {
-                Console.WriteLine("#{0}年", group.Key);
-                foreach (var book in group)
-                {
-                    Console.WriteLine(" {0}", book.Title);
-                }
-            }
-        }
-
-        private static void Exercise1_8()
-        {
-            var query = Library.Categories
-                               .GroupJoin(
-                                    Library.Books,
-                                    c => c.Id,
-                                    b => b.CategoryId,
-                                    (c, b) => new {
-                                        CategoryName = c.Name,
-                                        Count = b.Count()
-                                    })
-                                .Where(x => x.Count >= 4);
-            foreach (var category in query)
-                Console.WriteLine(category.CategoryName);
+            // 次のようにも書いた場合、結果が異なる                
+            var culture = new CultureInfo("ja-JP");
+            culture.DateTimeFormat.Calendar = new JapaneseCalendar();
+            // dddd で 日曜日 などの文字列を得ることができる
+            var dateStr = dateTime.ToString("ggyy年MM月dd日(dddd)", culture);
+            var str = Regex.Replace(dateStr, @"0(\d)", " $1");
+            Console.WriteLine(str);
         }
     }
 }
