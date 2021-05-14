@@ -4,52 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise1
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var text = "Cozy lummox gives smart squid who asks for job pen";
-            Exercise1_1(text);
-            Console.WriteLine();
-            Exercise1_2(text);
+            if (args.Length >= 1 && args[0] == "-toi")
+                PrintMeterToInchList(1, 10);
+            else
+                PrintInchToMeterList(1, 10);
         }
 
-        static void Exercise1_1(string text)
+        // フィートからメートルへの対応表を出力
+        static void PrintInchToMeterList(int start, int stop)
         {
-            var dict = new Dictionary<Char, int>();
-            foreach (var c in text)
+            for (int feet = start; feet <= stop; feet++)
             {
-                var uc = char.ToUpper(c);
-                if ('A' <= uc && uc <= 'Z')
-                {
-                    if (dict.ContainsKey(uc))
-                        dict[uc]++;
-                    else
-                        dict[uc] = 1;
-                }
+                double meter = InchConverter.ToMeter(feet);
+                Console.WriteLine("{0} inch = {1:0.0000} m", feet, meter);
             }
-            foreach (var item in dict.OrderBy(x => x.Key))
-                Console.WriteLine("{0}:{1}", item.Key, item.Value);
         }
 
-        static void Exercise1_2(string text)
+        // メートルからフィートへの対応表を出力
+        static void PrintMeterToInchList(int start, int stop)
         {
-            var dict = new SortedDictionary<Char, int>();
-            foreach (var c in text)
+            for (int meter = start; meter <= stop; meter++)
             {
-                var uc = char.ToUpper(c);
-                if ('A' <= uc && uc <= 'Z')
-                {
-                    if (dict.ContainsKey(uc))
-                        dict[uc]++;
-                    else
-                        dict[uc] = 1;
-                }
+                double feet = InchConverter.FromMeter(meter);
+                Console.WriteLine("{0} m = {1:0.0000} inch", meter, feet);
             }
-            foreach (var item in dict)
-                Console.WriteLine("{0}:{1}", item.Key, item.Value);
         }
     }
 }
