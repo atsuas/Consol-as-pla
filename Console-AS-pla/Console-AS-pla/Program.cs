@@ -2,30 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Exercise3
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var texts = new[] {
-               "Time is money.",
-               "What time is it?",
-               "It will take time.",
-               "We reorganized the timetable.",
-            };
-
-            foreach (var line in texts)
             {
-                var matches = Regex.Matches(line, @"\btime\b", RegexOptions.IgnoreCase);
-                foreach (Match m in matches)
+                var dt = new DateTime(2017, 1, 1);
+                foreach (var dayofweek in Enum.GetValues(typeof(DayOfWeek)))
                 {
-                    Console.WriteLine("{0}: {1}", line, m.Index);
+                    Console.Write("{0:yy/MM/dd}の次週の{1}: ", dt, (DayOfWeek)dayofweek);
+                    Console.WriteLine("{0:yy/MM/dd(ddd)}", NextWeek(dt, (DayOfWeek)dayofweek));
                 }
             }
+            Console.WriteLine();
+            {
+                var dt = new DateTime(2017, 4, 30);
+                foreach (var dayofweek in Enum.GetValues(typeof(DayOfWeek)))
+                {
+                    Console.Write("{0:yy/MM/dd}の次週の{1}: ", dt, (DayOfWeek)dayofweek);
+                    Console.WriteLine("{0:yy/MM/dd(ddd)}", NextWeek(dt, (DayOfWeek)dayofweek));
+                }
+            }
+        }
+
+        public static DateTime NextWeek(DateTime date, DayOfWeek dayOfWeek)
+        {
+            var nextweek = date.AddDays(7);
+            var days = (int)dayOfWeek - (int)(date.DayOfWeek);
+            return nextweek.AddDays(days);
         }
     }
 }
