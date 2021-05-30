@@ -10,53 +10,46 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var numbers = new List<int> { 12, 87, 94, 14, 53, 20, 40, 35, 76, 91, 31, 17, 48 };
-
-            // 3.1.1
-            Exercise1_1(numbers);
-            Console.WriteLine("-----");
-
-            // 3.1.2
-            Exercise1_2(numbers);
-            Console.WriteLine("-----");
-
-            // 3.1.3
-            Exercise1_3(numbers);
-            Console.WriteLine("-----");
-
-            // 3.1.4
-            Exercise1_4(numbers);
+            var text = "Cozy lummox gives smart squid who asks for job pen";
+            Exercise1_1(text);
+            Console.WriteLine();
+            Exercise1_2(text);
         }
 
-        private static void Exercise1_1(List<int> numbers)
+        static void Exercise1_1(string text)
         {
-            var exist = numbers.Exists(n => n % 8 == 0 || n % 9 == 0);
-            if (exist)
-                Console.WriteLine("存在しています");
-            else
-                Console.WriteLine("存在していません");
-        }
-
-        private static void Exercise1_2(List<int> numbers)
-        {
-            numbers.ForEach(n => Console.WriteLine(n / 2.0));
-        }
-
-        private static void Exercise1_3(List<int> numbers)
-        {
-            foreach (var n in numbers.Where(x => x >= 50))
+            var dict = new Dictionary<Char, int>();
+            foreach (var c in text)
             {
-                Console.WriteLine(n);
+                var uc = char.ToUpper(c);
+                if ('A' <= uc && uc <= 'Z')
+                {
+                    if (dict.ContainsKey(uc))
+                        dict[uc]++;
+                    else
+                        dict[uc] = 1;
+                }
             }
+            foreach (var item in dict.OrderBy(x => x.Key))
+                Console.WriteLine("{0}:{1}", item.Key, item.Value);
         }
 
-        private static void Exercise1_4(List<int> numbers)
+        static void Exercise1_2(string text)
         {
-            var list = numbers.Select(n => n * 2).ToList();
-            foreach (var n in list)
+            var dict = new SortedDictionary<Char, int>();
+            foreach (var c in text)
             {
-                Console.WriteLine(n);
+                var uc = char.ToUpper(c);
+                if ('A' <= uc && uc <= 'Z')
+                {
+                    if (dict.ContainsKey(uc))
+                        dict[uc]++;
+                    else
+                        dict[uc] = 1;
+                }
             }
+            foreach (var item in dict)
+                Console.WriteLine("{0}:{1}", item.Key, item.Value);
         }
     }
 }
