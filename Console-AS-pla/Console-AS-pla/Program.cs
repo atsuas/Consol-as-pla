@@ -5,71 +5,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise3
+namespace Exercise2
 {
-    // 売り上げ集計クラス
-    public class SalesCounter
+    class Program
     {
-        private IEnumerable<Sale> _sales;
-
-        // コンストラクタ
-        public SalesCounter(IEnumerable<Sale> sales)
+        static void Main(string[] args)
         {
-            _sales = sales;
+            if (args.Length == 0)
+                return;
+            var file = args[0];
+            var outputPath = Numbering(file);
+
+            Display(outputPath);
         }
 
-        // コンストラクタ
-        public SalesCounter(string filePath)
+        private static string Numbering(string file)
         {
-            _sales = ReadSales(filePath);
+            var lines = File.ReadLines(file)
+                            .Select((s, n) => string.Format("{0,4}: {1}", n + 1, s));
+            var path = Path.ChangeExtension(file, ".txt");
+            File.WriteAllLines(path, lines);
+            return path;
         }
 
-        // 売り上げデータを読み込み、Saleオブジェクトのリストを返す
-        private static IEnumerable<Sale> ReadSales(string filePath)
+        // 確認用コード
+        private static void Display(string outputPath)
         {
-            var sales = new List<Sale>();
-            var lines = File.ReadAllLines(filePath);
-            foreach (var line in lines)
-            {
-                var items = line.Split(',');
-                var sale = new Sale
-                {
-                    ShopName = items[0],
-                    ProductCategory = items[1],
-                    Amount = int.Parse(items[2])
-                };
-                sales.Add(sale);
-            }
-            return sales;
-        }
-
-        // カテゴリ別売上高を求める
-        public IDictionary<string, int> GetPerStoreSales()
-        {
-            var dict = new Dictionary<string, int>();
-            foreach (var sale in _sales)
-            {
-                if (dict.ContainsKey(sale.ShopName))
-                    dict[sale.ShopName] += sale.Amount;
-                else
-                    dict[sale.ShopName] = sale.Amount;
-            }
-            return dict;
-        }
-
-        // 商品カテゴリ別売上高を求める
-        public IDictionary<string, int> GetPerCategorySales()
-        {
-            var dict = new Dictionary<string, int>();
-            foreach (var sale in _sales)
-            {
-                if (dict.ContainsKey(sale.ProductCategory))
-                    dict[sale.ProductCategory] += sale.Amount;
-                else
-                    dict[sale.ProductCategory] = sale.Amount;
-            }
-            return dict;
+            var text = File.ReadAllText(outputPath);
+            Console.WriteLine(text);
         }
     }
-
 }
