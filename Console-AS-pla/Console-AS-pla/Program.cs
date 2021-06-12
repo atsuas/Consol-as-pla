@@ -3,60 +3,81 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Chapter04;
 
-namespace Exercise1
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var numbers = new int[] { 5, 10, 17, 9, 3, 21, 10, 40, 21, 3, 35 };
+            // 4.2.1
+            var ymCollection = new YearMonth[] {
+                new YearMonth(1980, 1),
+                new YearMonth(1990, 4),
+                new YearMonth(2000, 7),
+                new YearMonth(2010, 9),
+                new YearMonth(2020, 12),
+            };
 
-            Exercise1_1(numbers);
-            Console.WriteLine("-----");
+            // 4.2.2
+            Exercise2_2(ymCollection);
+            Console.WriteLine("----");
 
-            Exercise1_2(numbers);
-            Console.WriteLine("-----");
+            // 4.2.4
+            Exercise2_4(ymCollection);
+            Console.WriteLine("----");
 
-            Exercise1_3(numbers);
-            Console.WriteLine("-----");
 
-            Exercise1_4(numbers);
-            Console.WriteLine("-----");
-
-            Exercise1_5(numbers);
+            // 4.2.5
+            Exercise2_5(ymCollection);
         }
 
-        private static void Exercise1_1(int[] numbers)
+        // 4.2.3
+        static YearMonth FindFirst21C(YearMonth[] yms)
         {
-            var max = numbers.Max();
-            Console.WriteLine(max);
+            foreach (var ym in yms)
+            {
+                if (ym.Is21Century)
+                    return ym;
+            }
+            return null;
         }
 
-        private static void Exercise1_2(int[] numbers)
+        private static void Exercise2_2(YearMonth[] ymCollection)
         {
-            var skip = numbers.Length - 2;
-            foreach (var n in numbers.Skip(skip))
-                Console.WriteLine(n);
+            foreach (var ym in ymCollection)
+            {
+                Console.WriteLine(ym);
+            }
         }
 
-        private static void Exercise1_3(int[] numbers)
+        private static void Exercise2_4(YearMonth[] ymCollection)
         {
-            var strs = numbers.Select(n => n.ToString());
-            foreach (var s in strs)
-                Console.WriteLine(s);
+            var yearmonth = FindFirst21C(ymCollection);
+            if (yearmonth == null)
+                Console.WriteLine("21世紀のデータはありません");
+            else
+                Console.WriteLine(yearmonth);
+
+
+            // あるいは、以下のような書き方もできる
+            Console.WriteLine("----");
+            var yearmonth2 = FindFirst21C(ymCollection);
+            var s = yearmonth2 == null ? "21世紀のデータはありません" : yearmonth2.ToString();
+            Console.WriteLine(s);
         }
 
-        private static void Exercise1_4(int[] numbers)
-        {
-            foreach (var n in numbers.OrderBy(n => n).Take(3))
-                Console.WriteLine(n);
-        }
 
-        private static void Exercise1_5(int[] numbers)
+        private static void Exercise2_5(YearMonth[] ymCollection)
         {
-            var count = numbers.Distinct().Count(n => n > 10);
-            Console.WriteLine(count);
+            var array = ymCollection.Select(ym => ym.AddOneMonth())
+                                    .ToArray();
+            foreach (var ym in array)
+            {
+                Console.WriteLine(ym);
+            }
         }
     }
+
 }
