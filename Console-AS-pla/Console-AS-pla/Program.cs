@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Chapter04;
 
 namespace Exercise2
 {
@@ -11,73 +12,20 @@ namespace Exercise2
     {
         static void Main(string[] args)
         {
-            // 4.2.1
-            var ymCollection = new YearMonth[] {
-                new YearMonth(1980, 1),
-                new YearMonth(1990, 4),
-                new YearMonth(2000, 7),
-                new YearMonth(2010, 9),
-                new YearMonth(2020, 12),
-            };
-
-            // 4.2.2
-            Exercise2_2(ymCollection);
-            Console.WriteLine("----");
-
-            // 4.2.4
-            Exercise2_4(ymCollection);
-            Console.WriteLine("----");
-
-
-            // 4.2.5
-            Exercise2_5(ymCollection);
+            var file = args[0];
+            Pickup3DigitNumber(file);
         }
 
-        // 4.2.3
-        static YearMonth FindFirst21C(YearMonth[] yms)
+        private static void Pickup3DigitNumber(string file)
         {
-            foreach (var ym in yms)
+            foreach (var line in File.ReadLines(file))
             {
-                if (ym.Is21Century)
-                    return ym;
-            }
-            return null;
-        }
-
-        private static void Exercise2_2(YearMonth[] ymCollection)
-        {
-            foreach (var ym in ymCollection)
-            {
-                Console.WriteLine(ym);
-            }
-        }
-
-        private static void Exercise2_4(YearMonth[] ymCollection)
-        {
-            var yearmonth = FindFirst21C(ymCollection);
-            if (yearmonth == null)
-                Console.WriteLine("21世紀のデータはありません");
-            else
-                Console.WriteLine(yearmonth);
-
-
-            // あるいは、以下のような書き方もできる
-            Console.WriteLine("----");
-            var yearmonth2 = FindFirst21C(ymCollection);
-            var s = yearmonth2 == null ? "21世紀のデータはありません" : yearmonth2.ToString();
-            Console.WriteLine(s);
-        }
-
-
-        private static void Exercise2_5(YearMonth[] ymCollection)
-        {
-            var array = ymCollection.Select(ym => ym.AddOneMonth())
-                                    .ToArray();
-            foreach (var ym in array)
-            {
-                Console.WriteLine(ym);
+                var matches = Regex.Matches(line, @"\b\d{3,}\b");
+                foreach (Match m in matches)
+                {
+                    Console.WriteLine(m.Value);
+                }
             }
         }
     }
-
 }
