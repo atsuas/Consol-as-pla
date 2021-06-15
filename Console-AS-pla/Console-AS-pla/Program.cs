@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Exercise2
@@ -12,19 +10,29 @@ namespace Exercise2
     {
         static void Main(string[] args)
         {
-            var file = args[0];
-            Pickup3DigitNumber(file);
+            if (args.Length >= 1 && args[0] == "-toi")
+                PrintMeterToInchList(1, 10);
+            else
+                PrintInchToMeterList(1, 10);
         }
 
-        private static void Pickup3DigitNumber(string file)
+        // フィートからメートルへの対応表を出力
+        static void PrintInchToMeterList(int start, int stop)
         {
-            foreach (var line in File.ReadLines(file))
+            for (int feet = start; feet <= stop; feet++)
             {
-                var matches = Regex.Matches(line, @"\b\d{3,}\b");
-                foreach (Match m in matches)
-                {
-                    Console.WriteLine(m.Value);
-                }
+                double meter = InchConverter.ToMeter(feet);
+                Console.WriteLine("{0} inch = {1:0.0000} m", feet, meter);
+            }
+        }
+
+        // メートルからフィートへの対応表を出力
+        static void PrintMeterToInchList(int start, int stop)
+        {
+            for (int meter = start; meter <= stop; meter++)
+            {
+                double feet = InchConverter.FromMeter(meter);
+                Console.WriteLine("{0} m = {1:0.0000} inch", meter, feet);
             }
         }
     }
