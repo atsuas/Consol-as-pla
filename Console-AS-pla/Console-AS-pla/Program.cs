@@ -4,36 +4,60 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise2
+namespace Exercise1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            if (args.Length >= 1 && args[0] == "-toi")
-                PrintMeterToInchList(1, 10);
-            else
-                PrintInchToMeterList(1, 10);
+            var numbers = new List<int> { 12, 87, 94, 14, 53, 20, 40, 35, 76, 91, 31, 17, 48 };
+
+            // 3.1.1
+            Exercise1_1(numbers);
+            Console.WriteLine("-----");
+
+            // 3.1.2
+            Exercise1_2(numbers);
+            Console.WriteLine("-----");
+
+            // 3.1.3
+            Exercise1_3(numbers);
+            Console.WriteLine("-----");
+
+            // 3.1.4
+            Exercise1_4(numbers);
         }
 
-        // フィートからメートルへの対応表を出力
-        static void PrintInchToMeterList(int start, int stop)
+        private static void Exercise1_1(List<int> numbers)
         {
-            for (int feet = start; feet <= stop; feet++)
+            var exist = numbers.Exists(n => n % 8 == 0 || n % 9 == 0);
+            if (exist)
+                Console.WriteLine("存在しています");
+            else
+                Console.WriteLine("存在していません");
+        }
+
+        private static void Exercise1_2(List<int> numbers)
+        {
+            numbers.ForEach(n => Console.WriteLine(n / 2.0));
+        }
+
+        private static void Exercise1_3(List<int> numbers)
+        {
+            foreach (var n in numbers.Where(x => x >= 50))
             {
-                double meter = InchConverter.ToMeter(feet);
-                Console.WriteLine("{0} inch = {1:0.0000} m", feet, meter);
+                Console.WriteLine(n);
             }
         }
 
-        // メートルからフィートへの対応表を出力
-        static void PrintMeterToInchList(int start, int stop)
+        private static void Exercise1_4(List<int> numbers)
         {
-            for (int meter = start; meter <= stop; meter++)
+            var list = numbers.Select(n => n * 2).ToList();
+            foreach (var n in list)
             {
-                double feet = InchConverter.FromMeter(meter);
-                Console.WriteLine("{0} m = {1:0.0000} inch", meter, feet);
+                Console.WriteLine(n);
             }
         }
     }
 }
+
