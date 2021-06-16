@@ -4,60 +4,50 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise1
+// 演習問題なので、意味のない名前空間になっているが、本来は適切な名前にする必要あり。
+//  Exercise2で、このプロジェクトを参照に追加し利用している。
+namespace Chapter04
 {
-    class Program
+
+    // 4.1.1
+    public class YearMonth
     {
-        static void Main(string[] args)
+        public int Year { get; private set; }
+
+        public int Month { get; private set; }
+
+        public YearMonth(int year, int month)
         {
-            var numbers = new List<int> { 12, 87, 94, 14, 53, 20, 40, 35, 76, 91, 31, 17, 48 };
-
-            // 3.1.1
-            Exercise1_1(numbers);
-            Console.WriteLine("-----");
-
-            // 3.1.2
-            Exercise1_2(numbers);
-            Console.WriteLine("-----");
-
-            // 3.1.3
-            Exercise1_3(numbers);
-            Console.WriteLine("-----");
-
-            // 3.1.4
-            Exercise1_4(numbers);
+            Year = year;
+            Month = month;
         }
 
-        private static void Exercise1_1(List<int> numbers)
+        // 4.1.2
+        public bool Is21Century
         {
-            var exist = numbers.Exists(n => n % 8 == 0 || n % 9 == 0);
-            if (exist)
-                Console.WriteLine("存在しています");
+            get
+            {
+                return 2001 <= Year && Year <= 2100;
+            }
+        }
+
+        // 4.1.3
+        public YearMonth AddOneMonth()
+        {
+            if (Month == 12)
+            {
+                return new YearMonth(this.Year + 1, 1);
+            }
             else
-                Console.WriteLine("存在していません");
-        }
-
-        private static void Exercise1_2(List<int> numbers)
-        {
-            numbers.ForEach(n => Console.WriteLine(n / 2.0));
-        }
-
-        private static void Exercise1_3(List<int> numbers)
-        {
-            foreach (var n in numbers.Where(x => x >= 50))
             {
-                Console.WriteLine(n);
+                return new YearMonth(this.Year, this.Month + 1);
             }
         }
 
-        private static void Exercise1_4(List<int> numbers)
+        // 4.1.4
+        public override string ToString()
         {
-            var list = numbers.Select(n => n * 2).ToList();
-            foreach (var n in list)
-            {
-                Console.WriteLine(n);
-            }
+            return $"{Year}年{Month}月";
         }
     }
 }
-
