@@ -4,18 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise1
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var s1 = Console.ReadLine();
-            var s2 = Console.ReadLine();
-            if (string.Compare(s1, s2, ignoreCase: true) == 0)
-                Console.WriteLine("等しい");
+            if (args.Length >= 1 && args[0] == "-toi")
+                PrintMeterToInchList(1, 10);
             else
-                Console.WriteLine("等しくない");
+                PrintInchToMeterList(1, 10);
+        }
+
+        // フィートからメートルへの対応表を出力
+        static void PrintInchToMeterList(int start, int stop)
+        {
+            for (int feet = start; feet <= stop; feet++)
+            {
+                double meter = InchConverter.ToMeter(feet);
+                Console.WriteLine("{0} inch = {1:0.0000} m", feet, meter);
+            }
+        }
+
+        // メートルからフィートへの対応表を出力
+        static void PrintMeterToInchList(int start, int stop)
+        {
+            for (int meter = start; meter <= stop; meter++)
+            {
+                double feet = InchConverter.FromMeter(meter);
+                Console.WriteLine("{0} m = {1:0.0000} inch", meter, feet);
+            }
         }
     }
 }
