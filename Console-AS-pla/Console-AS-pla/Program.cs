@@ -10,53 +10,54 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var numbers = new int[] { 5, 10, 17, 9, 3, 21, 10, 40, 21, 3, 35 };
+            var numbers = new List<int> { 12, 87, 94, 14, 53, 20, 40, 35, 76, 91, 31, 17, 48 };
 
+            // 3.1.1
             Exercise1_1(numbers);
             Console.WriteLine("-----");
 
+            // 3.1.2
             Exercise1_2(numbers);
             Console.WriteLine("-----");
 
+            // 3.1.3
             Exercise1_3(numbers);
             Console.WriteLine("-----");
 
+            // 3.1.4
             Exercise1_4(numbers);
-            Console.WriteLine("-----");
-
-            Exercise1_5(numbers);
         }
 
-        private static void Exercise1_1(int[] numbers)
+        private static void Exercise1_1(List<int> numbers)
         {
-            var max = numbers.Max();
-            Console.WriteLine(max);
+            var exist = numbers.Exists(n => n % 8 == 0 || n % 9 == 0);
+            if (exist)
+                Console.WriteLine("存在しています");
+            else
+                Console.WriteLine("存在していません");
         }
 
-        private static void Exercise1_2(int[] numbers)
+        private static void Exercise1_2(List<int> numbers)
         {
-            var skip = numbers.Length - 2;
-            foreach (var n in numbers.Skip(skip))
+            numbers.ForEach(n => Console.WriteLine(n / 2.0));
+        }
+
+        private static void Exercise1_3(List<int> numbers)
+        {
+            foreach (var n in numbers.Where(x => x >= 50))
+            {
                 Console.WriteLine(n);
+            }
         }
 
-        private static void Exercise1_3(int[] numbers)
+        private static void Exercise1_4(List<int> numbers)
         {
-            var strs = numbers.Select(n => n.ToString());
-            foreach (var s in strs)
-                Console.WriteLine(s);
-        }
-
-        private static void Exercise1_4(int[] numbers)
-        {
-            foreach (var n in numbers.OrderBy(n => n).Take(3))
+            var list = numbers.Select(n => n * 2).ToList();
+            foreach (var n in list)
+            {
                 Console.WriteLine(n);
-        }
-
-        private static void Exercise1_5(int[] numbers)
-        {
-            var count = numbers.Distinct().Count(n => n > 10);
-            Console.WriteLine(count);
+            }
         }
     }
 }
+
