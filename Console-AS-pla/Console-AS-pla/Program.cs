@@ -2,30 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Exercise1
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(IsPhoneNumber("090-9111-1234"));
-            Console.WriteLine(IsPhoneNumber("080-9111-1234"));
-            Console.WriteLine(IsPhoneNumber("090-9111-1234"));
-            Console.WriteLine(IsPhoneNumber("060-9111-1234"));
-            Console.WriteLine(IsPhoneNumber("190-9111-1234"));
-            Console.WriteLine(IsPhoneNumber("091-9111-1234"));
-            Console.WriteLine(IsPhoneNumber("090-9111-12341"));
-            Console.WriteLine(IsPhoneNumber("A090-9111-1234"));
-            Console.WriteLine(IsPhoneNumber("090-911-1234"));
-            Console.WriteLine(IsPhoneNumber("090-1911-234"));
+            if (args.Length >= 1 && args[0] == "-toi")
+                PrintMeterToInchList(1, 10);
+            else
+                PrintInchToMeterList(1, 10);
         }
 
-        static bool IsPhoneNumber(string str)
+        // フィートからメートルへの対応表を出力
+        static void PrintInchToMeterList(int start, int stop)
         {
-            return Regex.IsMatch(str, @"^0[789]0-\d{4}-\d{4}$");
+            for (int feet = start; feet <= stop; feet++)
+            {
+                double meter = InchConverter.ToMeter(feet);
+                Console.WriteLine("{0} inch = {1:0.0000} m", feet, meter);
+            }
+        }
+
+        // メートルからフィートへの対応表を出力
+        static void PrintMeterToInchList(int start, int stop)
+        {
+            for (int meter = start; meter <= stop; meter++)
+            {
+                double feet = InchConverter.FromMeter(meter);
+                Console.WriteLine("{0} m = {1:0.0000} inch", meter, feet);
+            }
         }
     }
 }
