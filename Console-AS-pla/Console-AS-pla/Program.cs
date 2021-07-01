@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Chapter04;
 
 namespace Exercise2
 {
@@ -10,30 +11,73 @@ namespace Exercise2
     {
         static void Main(string[] args)
         {
-            if (args.Length >= 1 && args[0] == "-toi")
-                PrintMeterToInchList(1, 10);
-            else
-                PrintInchToMeterList(1, 10);
+            // 4.2.1
+            var ymCollection = new YearMonth[] {
+                new YearMonth(1980, 1),
+                new YearMonth(1990, 4),
+                new YearMonth(2000, 7),
+                new YearMonth(2010, 9),
+                new YearMonth(2020, 12),
+            };
+
+            // 4.2.2
+            Exercise2_2(ymCollection);
+            Console.WriteLine("----");
+
+            // 4.2.4
+            Exercise2_4(ymCollection);
+            Console.WriteLine("----");
+
+
+            // 4.2.5
+            Exercise2_5(ymCollection);
         }
 
-        // フィートからメートルへの対応表を出力
-        static void PrintInchToMeterList(int start, int stop)
+        // 4.2.3
+        static YearMonth FindFirst21C(YearMonth[] yms)
         {
-            for (int feet = start; feet <= stop; feet++)
+            foreach (var ym in yms)
             {
-                double meter = InchConverter.ToMeter(feet);
-                Console.WriteLine("{0} inch = {1:0.0000} m", feet, meter);
+                if (ym.Is21Century)
+                    return ym;
+            }
+            return null;
+        }
+
+        private static void Exercise2_2(YearMonth[] ymCollection)
+        {
+            foreach (var ym in ymCollection)
+            {
+                Console.WriteLine(ym);
             }
         }
 
-        // メートルからフィートへの対応表を出力
-        static void PrintMeterToInchList(int start, int stop)
+        private static void Exercise2_4(YearMonth[] ymCollection)
         {
-            for (int meter = start; meter <= stop; meter++)
+            var yearmonth = FindFirst21C(ymCollection);
+            if (yearmonth == null)
+                Console.WriteLine("21世紀のデータはありません");
+            else
+                Console.WriteLine(yearmonth);
+
+
+            // あるいは、以下のような書き方もできる
+            Console.WriteLine("----");
+            var yearmonth2 = FindFirst21C(ymCollection);
+            var s = yearmonth2 == null ? "21世紀のデータはありません" : yearmonth2.ToString();
+            Console.WriteLine(s);
+        }
+
+
+        private static void Exercise2_5(YearMonth[] ymCollection)
+        {
+            var array = ymCollection.Select(ym => ym.AddOneMonth())
+                                    .ToArray();
+            foreach (var ym in array)
             {
-                double feet = InchConverter.FromMeter(meter);
-                Console.WriteLine("{0} m = {1:0.0000} inch", meter, feet);
+                Console.WriteLine(ym);
             }
         }
     }
+
 }
