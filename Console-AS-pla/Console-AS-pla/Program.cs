@@ -10,34 +10,53 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            // 2.1.3
-            var songs = new Song[] {
-                new Song("Let it be", "The Beatles", 243),
-                new Song("Bridge Over Troubled Water", "Simon & Garfunkel", 293),
-                new Song("Close To You", "Carpenters", 276),
-                new Song("Honesty", "Billy Joel", 231),
-                new Song("I Will Always Love You", "Whitney Houston", 273),
-            };
-            PrintSongs(songs);
+            var numbers = new int[] { 5, 10, 17, 9, 3, 21, 10, 40, 21, 3, 35 };
 
+            Exercise1_1(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_2(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_3(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_4(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_5(numbers);
         }
 
-        // 2.1.4
-        private static void PrintSongs(Song[] songs)
+        private static void Exercise1_1(int[] numbers)
         {
-            foreach (var song in songs)
-            {
-                Console.WriteLine(@"{0}, {1} {2:m\:ss}",
-                    song.Title, song.ArtistName, TimeSpan.FromSeconds(song.Length));
-            }
+            var max = numbers.Max();
+            Console.WriteLine(max);
         }
 
-        /*
-           @"{0}, {1} {2:m\:ss}" について
-           {} の中で、:は特別な意味を持っている。そのため、: を 文字':'として表示させるために
-           \: としている。なお、\: をエスケープシーケンスと認識させないように、@を先頭に付加し、
-           逐語的リテラル文字列にしている。     
-        */
-    }
+        private static void Exercise1_2(int[] numbers)
+        {
+            var skip = numbers.Length - 2;
+            foreach (var n in numbers.Skip(skip))
+                Console.WriteLine(n);
+        }
 
+        private static void Exercise1_3(int[] numbers)
+        {
+            var strs = numbers.Select(n => n.ToString());
+            foreach (var s in strs)
+                Console.WriteLine(s);
+        }
+
+        private static void Exercise1_4(int[] numbers)
+        {
+            foreach (var n in numbers.OrderBy(n => n).Take(3))
+                Console.WriteLine(n);
+        }
+
+        private static void Exercise1_5(int[] numbers)
+        {
+            var count = numbers.Distinct().Count(n => n > 10);
+            Console.WriteLine(count);
+        }
+    }
 }
