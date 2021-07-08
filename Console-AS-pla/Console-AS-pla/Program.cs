@@ -1,37 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise3
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // 1.3.2
-            Student student = new Student
-            {
-                Name = "神田 理",
-                Birthday = new DateTime(2006, 11, 6),
-                ClassNumber = 2,
-                Grade = 5,
+            var names = new List<string> {
+                 "Tokyo", "New Delhi", "Bangkok", "London", "Paris", "Berlin", "Canberra", "Hong Kong",
             };
+            Exercise2_1(names);
+            Console.WriteLine();
+            Exercise2_2(names);
+            Console.WriteLine();
+            Exercise2_3(names);
+            Console.WriteLine();
+            Exercise2_4(names);
+        }
 
-            // 1.3.3
-            Console.WriteLine("{0} - {1}年{2}組 {3:yyyy/M/d}生まれ",
-                student.Name, student.Grade, student.ClassNumber, student.Birthday);
+        static void Exercise2_1(List<string> names)
+        {
+            Console.WriteLine("都市名を入力。空行で終了");
+            do
+            {
+                var line = Console.ReadLine();
+                if (string.IsNullOrEmpty(line))
+                    break;
+                var index = names.FindIndex(s => s == line);
+                Console.WriteLine(index);
+            } while (true);
+        }
 
-            // 1.3.4
-            Person person = student;
-            if (person is Student)
-                Console.WriteLine("person is Student");
+        static void Exercise2_2(List<string> names)
+        {
+            var count = names.Count(s => s.Contains('o'));
+            Console.WriteLine(count);
+        }
 
-            object obj = student;
-            if (obj is Student)
-                Console.WriteLine("obj is Student");
+        static void Exercise2_3(List<string> names)
+        {
+            var selected = names.Where(s => s.Contains('o'))
+                                .ToArray();
+            foreach (var name in selected)
+                Console.WriteLine(name);
+        }
+
+        static void Exercise2_4(List<string> names)
+        {
+            var selected = names.Where(s => s.StartsWith("B"))
+                                .Select(s => s.Length);
+            foreach (var length in selected)
+                Console.WriteLine(length);
         }
     }
-
 }
