@@ -1,61 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise2
+namespace Exercise1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var names = new List<string> {
-                 "Tokyo", "New Delhi", "Bangkok", "London", "Paris", "Berlin", "Canberra", "Hong Kong",
+            // 2.1.3
+            var songs = new Song[] {
+                new Song("Let it be", "The Beatles", 243),
+                new Song("Bridge Over Troubled Water", "Simon & Garfunkel", 293),
+                new Song("Close To You", "Carpenters", 276),
+                new Song("Honesty", "Billy Joel", 231),
+                new Song("I Will Always Love You", "Whitney Houston", 273),
             };
-            Exercise2_1(names);
-            Console.WriteLine();
-            Exercise2_2(names);
-            Console.WriteLine();
-            Exercise2_3(names);
-            Console.WriteLine();
-            Exercise2_4(names);
+            PrintSongs(songs);
+
         }
 
-        static void Exercise2_1(List<string> names)
+        // 2.1.4
+        private static void PrintSongs(Song[] songs)
         {
-            Console.WriteLine("都市名を入力。空行で終了");
-            do
+            foreach (var song in songs)
             {
-                var line = Console.ReadLine();
-                if (string.IsNullOrEmpty(line))
-                    break;
-                var index = names.FindIndex(s => s == line);
-                Console.WriteLine(index);
-            } while (true);
+                Console.WriteLine(@"{0}, {1} {2:m\:ss}",
+                    song.Title, song.ArtistName, TimeSpan.FromSeconds(song.Length));
+            }
         }
 
-        static void Exercise2_2(List<string> names)
-        {
-            var count = names.Count(s => s.Contains('o'));
-            Console.WriteLine(count);
-        }
-
-        static void Exercise2_3(List<string> names)
-        {
-            var selected = names.Where(s => s.Contains('o'))
-                                .ToArray();
-            foreach (var name in selected)
-                Console.WriteLine(name);
-        }
-
-        static void Exercise2_4(List<string> names)
-        {
-            var selected = names.Where(s => s.StartsWith("B"))
-                                .Select(s => s.Length);
-            foreach (var length in selected)
-                Console.WriteLine(length);
-        }
+        /*
+           @"{0}, {1} {2:m\:ss}" について
+           {} の中で、:は特別な意味を持っている。そのため、: を 文字':'として表示させるために
+           \: としている。なお、\: をエスケープシーケンスと認識させないように、@を先頭に付加し、
+           逐語的リテラル文字列にしている。     
+        */
     }
+
 }
