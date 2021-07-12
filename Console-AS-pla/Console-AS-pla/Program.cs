@@ -2,77 +2,47 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 
-namespace Exercise2
+namespace Exercise4
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var novelist = Exercise2_1("sample.xml");
-            Exercise2_2(novelist, "novelist.json");
+            if (args.Length <= 1)
+                return;
 
-            // これは確認のためのコード 12.2.1
-            Console.WriteLine("{0} {1}", novelist.Name, novelist.Birth);
-            foreach (var title in novelist.Masterpieces)
-            {
-                Console.WriteLine(title);
-            }
-            Console.WriteLine();
+            // これは確認用
+            Console.WriteLine($"source: {Path.GetFullPath(args[0])}");
+            Console.WriteLine($"dest:   {Path.GetFullPath(args[1])}\n");
+            // ここまで
 
-            // これは確認のためのコード 12.2.2
-            Console.WriteLine(File.ReadAllText("novelist.json"));
-            Console.WriteLine();
+            var sourceDir = args[0];
+            var destDir = args[1];
+            CopyFiles(sourceDir, destDir);
         }
 
-        static Novelist Exercise2_1(string file)
+        private static void CopyFiles(string sourceDir, string destDir)
         {
-            using (var reader = XmlReader.Create(file))
+            var files = Directory.EnumerateFiles(sourceDir, "*.*");
+            if (!Directory.Exists(destDir))
+                Directory.CreateDirectory(destDir);
+            foreach (var file in files)
             {
-                var serializer = new XmlSerializer(typeof(Novelist));
-                var novelist = (Novelist)serializer.Deserialize(reader);
-
-                return novelist;
+                var dest = GetBakFilePath(destDir, file);
+                Console.WriteLine(dest);
+                File.Copy(file, dest, overwrite: true);
             }
         }
 
-        static void Exercise2_2(Novelist novelist, string outfile)
+        private static string GetBakFilePath(string destDir, string file)
         {
-            using (var stream = new FileStream(outfile, FileMode.Create,
-                                                FileAccess.Write))
-            {
-                var serializer = new DataContractJsonSerializer(novelist.GetType(),
-                                                        new DataContractJsonSerializerSettings
-                                                        {
-                                                            DateTimeFormat = new DateTimeFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                                                        });
-                serializer.WriteObject(stream, novelist);
-            }
+            var name = Path.GetFileNameWithoutExtension(file) + "_bak";
+            var ext = Path.GetExtension(file);
+            // 拡張子がないファイルの場合、extは"" なので、無条件にextを追加してもうまくいく
+            return Path.Combine(destDir, name + ext);
         }
     }
-
-    [XmlRoot("novelist")]
-    [DataContract]
-    public class Novelist
-    {
-        [XmlElement(ElementName = "name")]
-        [DataMember(Name = "name")]
-        public string Name { get; set; }
-
-        [XmlElement(ElementName = "birth")]
-        [DataMember(Name = "birth")]
-        public DateTime Birth { get; set; }
-
-        [XmlArray("masterpieces")]
-        [XmlArrayItem("title", typeof(string))]
-        [DataMember(Name = "masterpieces")]
-        public string[] Masterpieces { get; set; }
-    }
-
 }
