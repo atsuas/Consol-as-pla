@@ -1,48 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise4
+namespace Exercise1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            if (args.Length <= 1)
-                return;
-
-            // これは確認用
-            Console.WriteLine($"source: {Path.GetFullPath(args[0])}");
-            Console.WriteLine($"dest:   {Path.GetFullPath(args[1])}\n");
-            // ここまで
-
-            var sourceDir = args[0];
-            var destDir = args[1];
-            CopyFiles(sourceDir, destDir);
+            var text = "Cozy lummox gives smart squid who asks for job pen";
+            Exercise1_1(text);
+            Console.WriteLine();
+            Exercise1_2(text);
         }
 
-        private static void CopyFiles(string sourceDir, string destDir)
+        static void Exercise1_1(string text)
         {
-            var files = Directory.EnumerateFiles(sourceDir, "*.*");
-            if (!Directory.Exists(destDir))
-                Directory.CreateDirectory(destDir);
-            foreach (var file in files)
+            var dict = new Dictionary<Char, int>();
+            foreach (var c in text)
             {
-                var dest = GetBakFilePath(destDir, file);
-                Console.WriteLine(dest);
-                File.Copy(file, dest, overwrite: true);
+                var uc = char.ToUpper(c);
+                if ('A' <= uc && uc <= 'Z')
+                {
+                    if (dict.ContainsKey(uc))
+                        dict[uc]++;
+                    else
+                        dict[uc] = 1;
+                }
             }
+            foreach (var item in dict.OrderBy(x => x.Key))
+                Console.WriteLine("{0}:{1}", item.Key, item.Value);
         }
 
-        private static string GetBakFilePath(string destDir, string file)
+        static void Exercise1_2(string text)
         {
-            var name = Path.GetFileNameWithoutExtension(file) + "_bak";
-            var ext = Path.GetExtension(file);
-            // 拡張子がないファイルの場合、extは"" なので、無条件にextを追加してもうまくいく
-            return Path.Combine(destDir, name + ext);
+            var dict = new SortedDictionary<Char, int>();
+            foreach (var c in text)
+            {
+                var uc = char.ToUpper(c);
+                if ('A' <= uc && uc <= 'Z')
+                {
+                    if (dict.ContainsKey(uc))
+                        dict[uc]++;
+                    else
+                        dict[uc] = 1;
+                }
+            }
+            foreach (var item in dict)
+                Console.WriteLine("{0}:{1}", item.Key, item.Value);
         }
     }
 }
