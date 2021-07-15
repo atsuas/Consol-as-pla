@@ -4,52 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise1
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var text = "Cozy lummox gives smart squid who asks for job pen";
-            Exercise1_1(text);
+            {
+                var dt = new DateTime(2017, 1, 1);
+                foreach (var dayofweek in Enum.GetValues(typeof(DayOfWeek)))
+                {
+                    Console.Write("{0:yy/MM/dd}の次週の{1}: ", dt, (DayOfWeek)dayofweek);
+                    Console.WriteLine("{0:yy/MM/dd(ddd)}", NextWeek(dt, (DayOfWeek)dayofweek));
+                }
+            }
             Console.WriteLine();
-            Exercise1_2(text);
-        }
-
-        static void Exercise1_1(string text)
-        {
-            var dict = new Dictionary<Char, int>();
-            foreach (var c in text)
             {
-                var uc = char.ToUpper(c);
-                if ('A' <= uc && uc <= 'Z')
+                var dt = new DateTime(2017, 4, 30);
+                foreach (var dayofweek in Enum.GetValues(typeof(DayOfWeek)))
                 {
-                    if (dict.ContainsKey(uc))
-                        dict[uc]++;
-                    else
-                        dict[uc] = 1;
+                    Console.Write("{0:yy/MM/dd}の次週の{1}: ", dt, (DayOfWeek)dayofweek);
+                    Console.WriteLine("{0:yy/MM/dd(ddd)}", NextWeek(dt, (DayOfWeek)dayofweek));
                 }
             }
-            foreach (var item in dict.OrderBy(x => x.Key))
-                Console.WriteLine("{0}:{1}", item.Key, item.Value);
         }
 
-        static void Exercise1_2(string text)
+        public static DateTime NextWeek(DateTime date, DayOfWeek dayOfWeek)
         {
-            var dict = new SortedDictionary<Char, int>();
-            foreach (var c in text)
-            {
-                var uc = char.ToUpper(c);
-                if ('A' <= uc && uc <= 'Z')
-                {
-                    if (dict.ContainsKey(uc))
-                        dict[uc]++;
-                    else
-                        dict[uc] = 1;
-                }
-            }
-            foreach (var item in dict)
-                Console.WriteLine("{0}:{1}", item.Key, item.Value);
+            var nextweek = date.AddDays(7);
+            var days = (int)dayOfWeek - (int)(date.DayOfWeek);
+            return nextweek.AddDays(days);
         }
     }
 }
