@@ -1,61 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise2
+namespace Exercise1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var names = new List<string> {
-                 "Tokyo", "New Delhi", "Bangkok", "London", "Paris", "Berlin", "Canberra", "Hong Kong",
-            };
-            Exercise2_1(names);
-            Console.WriteLine();
-            Exercise2_2(names);
-            Console.WriteLine();
-            Exercise2_3(names);
-            Console.WriteLine();
-            Exercise2_4(names);
+            var numbers = new int[] { 5, 10, 17, 9, 3, 21, 10, 40, 21, 3, 35 };
+
+            Exercise1_1(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_2(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_3(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_4(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_5(numbers);
         }
 
-        static void Exercise2_1(List<string> names)
+        private static void Exercise1_1(int[] numbers)
         {
-            Console.WriteLine("都市名を入力。空行で終了");
-            do
-            {
-                var line = Console.ReadLine();
-                if (string.IsNullOrEmpty(line))
-                    break;
-                var index = names.FindIndex(s => s == line);
-                Console.WriteLine(index);
-            } while (true);
+            var max = numbers.Max();
+            Console.WriteLine(max);
         }
 
-        static void Exercise2_2(List<string> names)
+        private static void Exercise1_2(int[] numbers)
         {
-            var count = names.Count(s => s.Contains('o'));
+            var skip = numbers.Length - 2;
+            foreach (var n in numbers.Skip(skip))
+                Console.WriteLine(n);
+        }
+
+        private static void Exercise1_3(int[] numbers)
+        {
+            var strs = numbers.Select(n => n.ToString());
+            foreach (var s in strs)
+                Console.WriteLine(s);
+        }
+
+        private static void Exercise1_4(int[] numbers)
+        {
+            foreach (var n in numbers.OrderBy(n => n).Take(3))
+                Console.WriteLine(n);
+        }
+
+        private static void Exercise1_5(int[] numbers)
+        {
+            var count = numbers.Distinct().Count(n => n > 10);
             Console.WriteLine(count);
-        }
-
-        static void Exercise2_3(List<string> names)
-        {
-            var selected = names.Where(s => s.Contains('o'))
-                                .ToArray();
-            foreach (var name in selected)
-                Console.WriteLine(name);
-        }
-
-        static void Exercise2_4(List<string> names)
-        {
-            var selected = names.Where(s => s.StartsWith("B"))
-                                .Select(s => s.Length);
-            foreach (var length in selected)
-                Console.WriteLine(length);
         }
     }
 }
