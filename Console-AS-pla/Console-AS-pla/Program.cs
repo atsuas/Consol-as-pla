@@ -4,59 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise1
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var numbers = new int[] { 5, 10, 17, 9, 3, 21, 10, 40, 21, 3, 35 };
-
-            Exercise1_1(numbers);
-            Console.WriteLine("-----");
-
-            Exercise1_2(numbers);
-            Console.WriteLine("-----");
-
-            Exercise1_3(numbers);
-            Console.WriteLine("-----");
-
-            Exercise1_4(numbers);
-            Console.WriteLine("-----");
-
-            Exercise1_5(numbers);
+            if (args.Length >= 1 && args[0] == "-toi")
+                PrintMeterToInchList(1, 10);
+            else
+                PrintInchToMeterList(1, 10);
         }
 
-        private static void Exercise1_1(int[] numbers)
+        // フィートからメートルへの対応表を出力
+        static void PrintInchToMeterList(int start, int stop)
         {
-            var max = numbers.Max();
-            Console.WriteLine(max);
+            for (int feet = start; feet <= stop; feet++)
+            {
+                double meter = InchConverter.ToMeter(feet);
+                Console.WriteLine("{0} inch = {1:0.0000} m", feet, meter);
+            }
         }
 
-        private static void Exercise1_2(int[] numbers)
+        // メートルからフィートへの対応表を出力
+        static void PrintMeterToInchList(int start, int stop)
         {
-            var skip = numbers.Length - 2;
-            foreach (var n in numbers.Skip(skip))
-                Console.WriteLine(n);
-        }
-
-        private static void Exercise1_3(int[] numbers)
-        {
-            var strs = numbers.Select(n => n.ToString());
-            foreach (var s in strs)
-                Console.WriteLine(s);
-        }
-
-        private static void Exercise1_4(int[] numbers)
-        {
-            foreach (var n in numbers.OrderBy(n => n).Take(3))
-                Console.WriteLine(n);
-        }
-
-        private static void Exercise1_5(int[] numbers)
-        {
-            var count = numbers.Distinct().Count(n => n > 10);
-            Console.WriteLine(count);
+            for (int meter = start; meter <= stop; meter++)
+            {
+                double feet = InchConverter.FromMeter(meter);
+                Console.WriteLine("{0} m = {1:0.0000} inch", meter, feet);
+            }
         }
     }
 }
