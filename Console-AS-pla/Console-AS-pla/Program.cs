@@ -1,83 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Chapter04;
+using System.Xml.Linq;
 
-namespace Exercise2
+namespace Exercise1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // 4.2.1
-            var ymCollection = new YearMonth[] {
-                new YearMonth(1980, 1),
-                new YearMonth(1990, 4),
-                new YearMonth(2000, 7),
-                new YearMonth(2010, 9),
-                new YearMonth(2020, 12),
-            };
+            var file = "sample.xml";
+            Exercise1_1(file);
+            Console.WriteLine();
+            Exercise1_2(file);
+            Console.WriteLine();
+            Exercise1_3(file);
+            Console.WriteLine();
 
-            // 4.2.2
-            Exercise2_2(ymCollection);
-            Console.WriteLine("----");
+            var newfile = "sports.xml";
+            Exercise1_4(file, newfile);
 
-            // 4.2.4
-            Exercise2_4(ymCollection);
-            Console.WriteLine("----");
-
-
-            // 4.2.5
-            Exercise2_5(ymCollection);
+            // これは確認用
+            var text = File.ReadAllText(newfile);
+            Console.WriteLine(text);
         }
 
-        // 4.2.3
-        static YearMonth FindFirst21C(YearMonth[] yms)
+        static void Exercise1_1(string file)
         {
-            foreach (var ym in yms)
+            var xdoc = XDocument.Load(file);
+            var sports = xdoc.Root.Elements()
+                             .Select(x => new {
+                                 Name = x.Element("name").Value,
+                                 Teammembers = x.Element("teammembers").Value
+                             });
+            foreach (var sport in sports)
             {
-                if (ym.Is21Century)
-                    return ym;
-            }
-            return null;
-        }
-
-        private static void Exercise2_2(YearMonth[] ymCollection)
-        {
-            foreach (var ym in ymCollection)
-            {
-                Console.WriteLine(ym);
+                Console.WriteLine("{0} {1}", sport.Name, sport.Teammembers);
             }
         }
-
-        private static void Exercise2_4(YearMonth[] ymCollection)
+        static void Exercise1_2(string file)
         {
-            var yearmonth = FindFirst21C(ymCollection);
-            if (yearmonth == null)
-                Console.WriteLine("21世紀のデータはありません");
-            else
-                Console.WriteLine(yearmonth);
-
-
-            // あるいは、以下のような書き方もできる
-            Console.WriteLine("----");
-            var yearmonth2 = FindFirst21C(ymCollection);
-            var s = yearmonth2 == null ? "21世紀のデータはありません" : yearmonth2.ToString();
-            Console.WriteLine(s);
-        }
-
-
-        private static void Exercise2_5(YearMonth[] ymCollection)
-        {
-            var array = ymCollection.Select(ym => ym.AddOneMonth())
-                                    .ToArray();
-            foreach (var ym in array)
+            var xdoc = XDocument.Load(file);
+            var sports = xdoc.Root.Elements()
+                             .Select(x => new {
+                                 Firstplayed = x.Element("firstplayed").Value,
+                                 Name = x.Element("name").Attribute("kanji").Value
+                             })
+                             .OrderBy(x => int.Parse(x.Firstplayed));
+            foreach (var sport in sports)
             {
-                Console.WriteLine(ym);
+                Console.WriteLine("{0}", sport.Name);
             }
         }
+
+        static void Exercise1_3(string file)
+        {
+            var xdoc = XDocument.Load(file);
+            var sport = xdoc.Root.Elements()
+                             .Select(x => new {
+                                 Name = x.Element("name").Value,
+                                 Teammembers = x.Element("teammembers").Value
+                             })
+                             .OrderByDescending(x => int.Parse(x.Teammembers))
+                             .First();
+            Console.WriteLine("{0}", sport.Name);
+        }
+
+        static void Exercise1_4(string file, string newfile)
+        {
+            var xdoc = XDocument.Load(file);
+            var element = new XElement("ballsport",
+                 new XElement("name", "サッカー", new XAttribute("kanji", "蹴球")),
+                 new XElement("teammembers", "11"),
+                 new XElement("firstplayed", "1863")
+              );
+            xdoc.Root.Add(element);
+            xdoc.Save(newfile);
+        }
+
     }
-
 }
