@@ -2,84 +2,77 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
+using System.Xml;
+using System.Xml.Serialization;
 
-namespace Exercise1
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var file = "sample.xml";
-            Exercise1_1(file);
-            Console.WriteLine();
-            Exercise1_2(file);
-            Console.WriteLine();
-            Exercise1_3(file);
-            Console.WriteLine();
+            var novelist = Exercise2_1("sample.xml");
+            Exercise2_2(novelist, "novelist.json");
 
-            var newfile = "sports.xml";
-            Exercise1_4(file, newfile);
-
-            // これは確認用
-            var text = File.ReadAllText(newfile);
-            Console.WriteLine(text);
-        }
-
-        static void Exercise1_1(string file)
-        {
-            var xdoc = XDocument.Load(file);
-            var sports = xdoc.Root.Elements()
-                             .Select(x => new {
-                                 Name = x.Element("name").Value,
-                                 Teammembers = x.Element("teammembers").Value
-                             });
-            foreach (var sport in sports)
+            // これは確認のためのコード 12.2.1
+            Console.WriteLine("{0} {1}", novelist.Name, novelist.Birth);
+            foreach (var title in novelist.Masterpieces)
             {
-                Console.WriteLine("{0} {1}", sport.Name, sport.Teammembers);
+                Console.WriteLine(title);
             }
+            Console.WriteLine();
+
+            // これは確認のためのコード 12.2.2
+            Console.WriteLine(File.ReadAllText("novelist.json"));
+            Console.WriteLine();
         }
-        static void Exercise1_2(string file)
+
+        static Novelist Exercise2_1(string file)
         {
-            var xdoc = XDocument.Load(file);
-            var sports = xdoc.Root.Elements()
-                             .Select(x => new {
-                                 Firstplayed = x.Element("firstplayed").Value,
-                                 Name = x.Element("name").Attribute("kanji").Value
-                             })
-                             .OrderBy(x => int.Parse(x.Firstplayed));
-            foreach (var sport in sports)
+            using (var reader = XmlReader.Create(file))
             {
-                Console.WriteLine("{0}", sport.Name);
+                var serializer = new XmlSerializer(typeof(Novelist));
+                var novelist = (Novelist)serializer.Deserialize(reader);
+
+                return novelist;
             }
         }
 
-        static void Exercise1_3(string file)
+        static void Exercise2_2(Novelist novelist, string outfile)
         {
-            var xdoc = XDocument.Load(file);
-            var sport = xdoc.Root.Elements()
-                             .Select(x => new {
-                                 Name = x.Element("name").Value,
-                                 Teammembers = x.Element("teammembers").Value
-                             })
-                             .OrderByDescending(x => int.Parse(x.Teammembers))
-                             .First();
-            Console.WriteLine("{0}", sport.Name);
+            using (var stream = new FileStream(outfile, FileMode.Create,
+                                                FileAccess.Write))
+            {
+                var serializer = new DataContractJsonSerializer(novelist.GetType(),
+                                                        new DataContractJsonSerializerSettings
+                                                        {
+                                                            DateTimeFormat = new DateTimeFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                                                        });
+                serializer.WriteObject(stream, novelist);
+            }
         }
-
-        static void Exercise1_4(string file, string newfile)
-        {
-            var xdoc = XDocument.Load(file);
-            var element = new XElement("ballsport",
-                 new XElement("name", "サッカー", new XAttribute("kanji", "蹴球")),
-                 new XElement("teammembers", "11"),
-                 new XElement("firstplayed", "1863")
-              );
-            xdoc.Root.Add(element);
-            xdoc.Save(newfile);
-        }
-
     }
+
+    [XmlRoot("novelist")]
+    [DataContract]
+    public class Novelist
+    {
+        [XmlElement(ElementName = "name")]
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        [XmlElement(ElementName = "birth")]
+        [DataMember(Name = "birth")]
+        public DateTime Birth { get; set; }
+
+        [XmlArray("masterpieces")]
+        [XmlArrayItem("title", typeof(string))]
+        [DataMember(Name = "masterpieces")]
+        public string[] Masterpieces { get; set; }
+    }
+
 }
