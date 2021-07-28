@@ -1,62 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Exercise1
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var numbers = new int[] { 5, 10, 17, 9, 3, 21, 10, 40, 21, 3, 35 };
-
-            Exercise1_1(numbers);
-            Console.WriteLine("-----");
-
-            Exercise1_2(numbers);
-            Console.WriteLine("-----");
-
-            Exercise1_3(numbers);
-            Console.WriteLine("-----");
-
-            Exercise1_4(numbers);
-            Console.WriteLine("-----");
-
-            Exercise1_5(numbers);
+            var file = args[0];
+            Pickup3DigitNumber(file);
         }
 
-        private static void Exercise1_1(int[] numbers)
+        private static void Pickup3DigitNumber(string file)
         {
-            var max = numbers.Max();
-            Console.WriteLine(max);
-        }
-
-        private static void Exercise1_2(int[] numbers)
-        {
-            var skip = numbers.Length - 2;
-            foreach (var n in numbers.Skip(skip))
-                Console.WriteLine(n);
-        }
-
-        private static void Exercise1_3(int[] numbers)
-        {
-            var strs = numbers.Select(n => n.ToString());
-            foreach (var s in strs)
-                Console.WriteLine(s);
-        }
-
-        private static void Exercise1_4(int[] numbers)
-        {
-            foreach (var n in numbers.OrderBy(n => n).Take(3))
-                Console.WriteLine(n);
-        }
-
-        private static void Exercise1_5(int[] numbers)
-        {
-            var count = numbers.Distinct().Count(n => n > 10);
-            Console.WriteLine(count);
+            foreach (var line in File.ReadLines(file))
+            {
+                var matches = Regex.Matches(line, @"\b\d{3,}\b");
+                foreach (Match m in matches)
+                {
+                    Console.WriteLine(m.Value);
+                }
+            }
         }
     }
 }
+
