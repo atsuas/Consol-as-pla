@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Exercise1
 {
@@ -12,75 +10,53 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var file = "sample.xml";
-            Exercise1_1(file);
-            Console.WriteLine();
-            Exercise1_2(file);
-            Console.WriteLine();
-            Exercise1_3(file);
-            Console.WriteLine();
+            var numbers = new int[] { 5, 10, 17, 9, 3, 21, 10, 40, 21, 3, 35 };
 
-            var newfile = "sports.xml";
-            Exercise1_4(file, newfile);
+            Exercise1_1(numbers);
+            Console.WriteLine("-----");
 
-            // これは確認用
-            var text = File.ReadAllText(newfile);
-            Console.WriteLine(text);
+            Exercise1_2(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_3(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_4(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_5(numbers);
         }
 
-        static void Exercise1_1(string file)
+        private static void Exercise1_1(int[] numbers)
         {
-            var xdoc = XDocument.Load(file);
-            var sports = xdoc.Root.Elements()
-                             .Select(x => new {
-                                 Name = x.Element("name").Value,
-                                 Teammembers = x.Element("teammembers").Value
-                             });
-            foreach (var sport in sports)
-            {
-                Console.WriteLine("{0} {1}", sport.Name, sport.Teammembers);
-            }
-        }
-        static void Exercise1_2(string file)
-        {
-            var xdoc = XDocument.Load(file);
-            var sports = xdoc.Root.Elements()
-                             .Select(x => new {
-                                 Firstplayed = x.Element("firstplayed").Value,
-                                 Name = x.Element("name").Attribute("kanji").Value
-                             })
-                             .OrderBy(x => int.Parse(x.Firstplayed));
-            foreach (var sport in sports)
-            {
-                Console.WriteLine("{0}", sport.Name);
-            }
+            var max = numbers.Max();
+            Console.WriteLine(max);
         }
 
-        static void Exercise1_3(string file)
+        private static void Exercise1_2(int[] numbers)
         {
-            var xdoc = XDocument.Load(file);
-            var sport = xdoc.Root.Elements()
-                             .Select(x => new {
-                                 Name = x.Element("name").Value,
-                                 Teammembers = x.Element("teammembers").Value
-                             })
-                             .OrderByDescending(x => int.Parse(x.Teammembers))
-                             .First();
-            Console.WriteLine("{0}", sport.Name);
+            var skip = numbers.Length - 2;
+            foreach (var n in numbers.Skip(skip))
+                Console.WriteLine(n);
         }
 
-        static void Exercise1_4(string file, string newfile)
+        private static void Exercise1_3(int[] numbers)
         {
-            var xdoc = XDocument.Load(file);
-            var element = new XElement("ballsport",
-                 new XElement("name", "サッカー", new XAttribute("kanji", "蹴球")),
-                 new XElement("teammembers", "11"),
-                 new XElement("firstplayed", "1863")
-              );
-            xdoc.Root.Add(element);
-            xdoc.Save(newfile);
+            var strs = numbers.Select(n => n.ToString());
+            foreach (var s in strs)
+                Console.WriteLine(s);
         }
 
+        private static void Exercise1_4(int[] numbers)
+        {
+            foreach (var n in numbers.OrderBy(n => n).Take(3))
+                Console.WriteLine(n);
+        }
+
+        private static void Exercise1_5(int[] numbers)
+        {
+            var count = numbers.Distinct().Count(n => n > 10);
+            Console.WriteLine(count);
+        }
     }
 }
-
