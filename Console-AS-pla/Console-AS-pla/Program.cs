@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
-using Chapter04;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Exercise2
 {
@@ -11,73 +15,64 @@ namespace Exercise2
     {
         static void Main(string[] args)
         {
-            // 4.2.1
-            var ymCollection = new YearMonth[] {
-                new YearMonth(1980, 1),
-                new YearMonth(1990, 4),
-                new YearMonth(2000, 7),
-                new YearMonth(2010, 9),
-                new YearMonth(2020, 12),
-            };
+            var novelist = Exercise2_1("sample.xml");
+            Exercise2_2(novelist, "novelist.json");
 
-            // 4.2.2
-            Exercise2_2(ymCollection);
-            Console.WriteLine("----");
-
-            // 4.2.4
-            Exercise2_4(ymCollection);
-            Console.WriteLine("----");
-
-
-            // 4.2.5
-            Exercise2_5(ymCollection);
-        }
-
-        // 4.2.3
-        static YearMonth FindFirst21C(YearMonth[] yms)
-        {
-            foreach (var ym in yms)
+            // これは確認のためのコード 12.2.1
+            Console.WriteLine("{0} {1}", novelist.Name, novelist.Birth);
+            foreach (var title in novelist.Masterpieces)
             {
-                if (ym.Is21Century)
-                    return ym;
+                Console.WriteLine(title);
             }
-            return null;
+            Console.WriteLine();
+
+            // これは確認のためのコード 12.2.2
+            Console.WriteLine(File.ReadAllText("novelist.json"));
+            Console.WriteLine();
         }
 
-        private static void Exercise2_2(YearMonth[] ymCollection)
+        static Novelist Exercise2_1(string file)
         {
-            foreach (var ym in ymCollection)
+            using (var reader = XmlReader.Create(file))
             {
-                Console.WriteLine(ym);
+                var serializer = new XmlSerializer(typeof(Novelist));
+                var novelist = (Novelist)serializer.Deserialize(reader);
+
+                return novelist;
             }
         }
 
-        private static void Exercise2_4(YearMonth[] ymCollection)
+        static void Exercise2_2(Novelist novelist, string outfile)
         {
-            var yearmonth = FindFirst21C(ymCollection);
-            if (yearmonth == null)
-                Console.WriteLine("21世紀のデータはありません");
-            else
-                Console.WriteLine(yearmonth);
-
-
-            // あるいは、以下のような書き方もできる
-            Console.WriteLine("----");
-            var yearmonth2 = FindFirst21C(ymCollection);
-            var s = yearmonth2 == null ? "21世紀のデータはありません" : yearmonth2.ToString();
-            Console.WriteLine(s);
-        }
-
-
-        private static void Exercise2_5(YearMonth[] ymCollection)
-        {
-            var array = ymCollection.Select(ym => ym.AddOneMonth())
-                                    .ToArray();
-            foreach (var ym in array)
+            using (var stream = new FileStream(outfile, FileMode.Create,
+                                                FileAccess.Write))
             {
-                Console.WriteLine(ym);
+                var serializer = new DataContractJsonSerializer(novelist.GetType(),
+                                                        new DataContractJsonSerializerSettings
+                                                        {
+                                                            DateTimeFormat = new DateTimeFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                                                        });
+                serializer.WriteObject(stream, novelist);
             }
         }
+    }
+
+    [XmlRoot("novelist")]
+    [DataContract]
+    public class Novelist
+    {
+        [XmlElement(ElementName = "name")]
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        [XmlElement(ElementName = "birth")]
+        [DataMember(Name = "birth")]
+        public DateTime Birth { get; set; }
+
+        [XmlArray("masterpieces")]
+        [XmlArrayItem("title", typeof(string))]
+        [DataMember(Name = "masterpieces")]
+        public string[] Masterpieces { get; set; }
     }
 
 }
