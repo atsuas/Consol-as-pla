@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace Exercise2
 {
@@ -15,64 +10,30 @@ namespace Exercise2
     {
         static void Main(string[] args)
         {
-            var novelist = Exercise2_1("sample.xml");
-            Exercise2_2(novelist, "novelist.json");
-
-            // これは確認のためのコード 12.2.1
-            Console.WriteLine("{0} {1}", novelist.Name, novelist.Birth);
-            foreach (var title in novelist.Masterpieces)
             {
-                Console.WriteLine(title);
+                var dt = new DateTime(2017, 1, 1);
+                foreach (var dayofweek in Enum.GetValues(typeof(DayOfWeek)))
+                {
+                    Console.Write("{0:yy/MM/dd}の次週の{1}: ", dt, (DayOfWeek)dayofweek);
+                    Console.WriteLine("{0:yy/MM/dd(ddd)}", NextWeek(dt, (DayOfWeek)dayofweek));
+                }
             }
             Console.WriteLine();
-
-            // これは確認のためのコード 12.2.2
-            Console.WriteLine(File.ReadAllText("novelist.json"));
-            Console.WriteLine();
-        }
-
-        static Novelist Exercise2_1(string file)
-        {
-            using (var reader = XmlReader.Create(file))
             {
-                var serializer = new XmlSerializer(typeof(Novelist));
-                var novelist = (Novelist)serializer.Deserialize(reader);
-
-                return novelist;
+                var dt = new DateTime(2017, 4, 30);
+                foreach (var dayofweek in Enum.GetValues(typeof(DayOfWeek)))
+                {
+                    Console.Write("{0:yy/MM/dd}の次週の{1}: ", dt, (DayOfWeek)dayofweek);
+                    Console.WriteLine("{0:yy/MM/dd(ddd)}", NextWeek(dt, (DayOfWeek)dayofweek));
+                }
             }
         }
 
-        static void Exercise2_2(Novelist novelist, string outfile)
+        public static DateTime NextWeek(DateTime date, DayOfWeek dayOfWeek)
         {
-            using (var stream = new FileStream(outfile, FileMode.Create,
-                                                FileAccess.Write))
-            {
-                var serializer = new DataContractJsonSerializer(novelist.GetType(),
-                                                        new DataContractJsonSerializerSettings
-                                                        {
-                                                            DateTimeFormat = new DateTimeFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                                                        });
-                serializer.WriteObject(stream, novelist);
-            }
+            var nextweek = date.AddDays(7);
+            var days = (int)dayOfWeek - (int)(date.DayOfWeek);
+            return nextweek.AddDays(days);
         }
     }
-
-    [XmlRoot("novelist")]
-    [DataContract]
-    public class Novelist
-    {
-        [XmlElement(ElementName = "name")]
-        [DataMember(Name = "name")]
-        public string Name { get; set; }
-
-        [XmlElement(ElementName = "birth")]
-        [DataMember(Name = "birth")]
-        public DateTime Birth { get; set; }
-
-        [XmlArray("masterpieces")]
-        [XmlArrayItem("title", typeof(string))]
-        [DataMember(Name = "masterpieces")]
-        public string[] Masterpieces { get; set; }
-    }
-
 }
