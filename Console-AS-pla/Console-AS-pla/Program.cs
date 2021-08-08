@@ -5,57 +5,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise2
+// コンソールアプリケーションとして作成しています。
+
+namespace Exercise1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var names = new List<string> {
-                 "Tokyo", "New Delhi", "Bangkok", "London", "Paris", "Berlin", "Canberra", "Hong Kong",
-            };
-            Exercise2_1(names);
-            Console.WriteLine();
-            Exercise2_2(names);
-            Console.WriteLine();
-            Exercise2_3(names);
-            Console.WriteLine();
-            Exercise2_4(names);
+            RunAsync();
+            // 非同期で動作しているので、ここでキー入力待ちにして、プログラムが終わらないようにしている。
+            // Mainメソッドには、async は使えない。
+            Console.ReadLine();
         }
 
-        static void Exercise2_1(List<string> names)
+        private static async void RunAsync()
         {
-            Console.WriteLine("都市名を入力。空行で終了");
-            do
+            var text = await TextReaderSample.ReadTextAsync("oop.md");
+            Console.WriteLine(text);
+        }
+    }
+
+    static class TextReaderSample
+    {
+        public static async Task<string> ReadTextAsync(string filePath)
+        {
+            var sb = new StringBuilder();
+            var sr = new StreamReader(filePath);
+            while (!sr.EndOfStream)
             {
-                var line = Console.ReadLine();
-                if (string.IsNullOrEmpty(line))
-                    break;
-                var index = names.FindIndex(s => s == line);
-                Console.WriteLine(index);
-            } while (true);
-        }
-
-        static void Exercise2_2(List<string> names)
-        {
-            var count = names.Count(s => s.Contains('o'));
-            Console.WriteLine(count);
-        }
-
-        static void Exercise2_3(List<string> names)
-        {
-            var selected = names.Where(s => s.Contains('o'))
-                                .ToArray();
-            foreach (var name in selected)
-                Console.WriteLine(name);
-        }
-
-        static void Exercise2_4(List<string> names)
-        {
-            var selected = names.Where(s => s.StartsWith("B"))
-                                .Select(s => s.Length);
-            foreach (var length in selected)
-                Console.WriteLine(length);
+                var line = await sr.ReadLineAsync();
+                sb.AppendLine(line);
+            }
+            return sb.ToString();
         }
     }
 }
