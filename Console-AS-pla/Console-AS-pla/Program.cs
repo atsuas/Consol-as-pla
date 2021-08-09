@@ -1,43 +1,83 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Chapter04;
 
-// コンソールアプリケーションとして作成しています。
-
-namespace Exercise1
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            RunAsync();
-            // 非同期で動作しているので、ここでキー入力待ちにして、プログラムが終わらないようにしている。
-            // Mainメソッドには、async は使えない。
-            Console.ReadLine();
+            // 4.2.1
+            var ymCollection = new YearMonth[] {
+                new YearMonth(1980, 1),
+                new YearMonth(1990, 4),
+                new YearMonth(2000, 7),
+                new YearMonth(2010, 9),
+                new YearMonth(2020, 12),
+            };
+
+            // 4.2.2
+            Exercise2_2(ymCollection);
+            Console.WriteLine("----");
+
+            // 4.2.4
+            Exercise2_4(ymCollection);
+            Console.WriteLine("----");
+
+
+            // 4.2.5
+            Exercise2_5(ymCollection);
         }
 
-        private static async void RunAsync()
+        // 4.2.3
+        static YearMonth FindFirst21C(YearMonth[] yms)
         {
-            var text = await TextReaderSample.ReadTextAsync("oop.md");
-            Console.WriteLine(text);
-        }
-    }
-
-    static class TextReaderSample
-    {
-        public static async Task<string> ReadTextAsync(string filePath)
-        {
-            var sb = new StringBuilder();
-            var sr = new StreamReader(filePath);
-            while (!sr.EndOfStream)
+            foreach (var ym in yms)
             {
-                var line = await sr.ReadLineAsync();
-                sb.AppendLine(line);
+                if (ym.Is21Century)
+                    return ym;
             }
-            return sb.ToString();
+            return null;
+        }
+
+        private static void Exercise2_2(YearMonth[] ymCollection)
+        {
+            foreach (var ym in ymCollection)
+            {
+                Console.WriteLine(ym);
+            }
+        }
+
+        private static void Exercise2_4(YearMonth[] ymCollection)
+        {
+            var yearmonth = FindFirst21C(ymCollection);
+            if (yearmonth == null)
+                Console.WriteLine("21世紀のデータはありません");
+            else
+                Console.WriteLine(yearmonth);
+
+
+            // あるいは、以下のような書き方もできる
+            Console.WriteLine("----");
+            var yearmonth2 = FindFirst21C(ymCollection);
+            var s = yearmonth2 == null ? "21世紀のデータはありません" : yearmonth2.ToString();
+            Console.WriteLine(s);
+        }
+
+
+        private static void Exercise2_5(YearMonth[] ymCollection)
+        {
+            var array = ymCollection.Select(ym => ym.AddOneMonth())
+                                    .ToArray();
+            foreach (var ym in array)
+            {
+                Console.WriteLine(ym);
+            }
         }
     }
+
 }
