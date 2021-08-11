@@ -1,83 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Chapter04;
 
-namespace Exercise2
+namespace Exercise3
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // 4.2.1
-            var ymCollection = new YearMonth[] {
-                new YearMonth(1980, 1),
-                new YearMonth(1990, 4),
-                new YearMonth(2000, 7),
-                new YearMonth(2010, 9),
-                new YearMonth(2020, 12),
-            };
+            if (args.Length <= 1)
+                return;
+            var file1 = args[0];
+            var file2 = args[1];
+            Concat(file1, file2);
 
-            // 4.2.2
-            Exercise2_2(ymCollection);
-            Console.WriteLine("----");
-
-            // 4.2.4
-            Exercise2_4(ymCollection);
-            Console.WriteLine("----");
-
-
-            // 4.2.5
-            Exercise2_5(ymCollection);
+            Display(file1);
         }
 
-        // 4.2.3
-        static YearMonth FindFirst21C(YearMonth[] yms)
+        // これが一番簡潔なコード。
+        private static void Concat(string file1, string file2)
         {
-            foreach (var ym in yms)
-            {
-                if (ym.Is21Century)
-                    return ym;
-            }
-            return null;
+            File.AppendAllLines(file1, File.ReadLines(file2));
         }
 
-        private static void Exercise2_2(YearMonth[] ymCollection)
+        // こんな書き方もできる
+        private static void Concat2(string file1, string file2)
         {
-            foreach (var ym in ymCollection)
+            using (var dest = new StreamWriter(file1, append: true, encoding: Encoding.UTF8))
             {
-                Console.WriteLine(ym);
+                var lines = File.ReadLines(file2);
+                foreach (var line in lines)
+                    dest.WriteLine(line);
             }
         }
 
-        private static void Exercise2_4(YearMonth[] ymCollection)
+        // 確認用コード
+        private static void Display(string outputPath)
         {
-            var yearmonth = FindFirst21C(ymCollection);
-            if (yearmonth == null)
-                Console.WriteLine("21世紀のデータはありません");
-            else
-                Console.WriteLine(yearmonth);
-
-
-            // あるいは、以下のような書き方もできる
-            Console.WriteLine("----");
-            var yearmonth2 = FindFirst21C(ymCollection);
-            var s = yearmonth2 == null ? "21世紀のデータはありません" : yearmonth2.ToString();
-            Console.WriteLine(s);
-        }
-
-
-        private static void Exercise2_5(YearMonth[] ymCollection)
-        {
-            var array = ymCollection.Select(ym => ym.AddOneMonth())
-                                    .ToArray();
-            foreach (var ym in array)
-            {
-                Console.WriteLine(ym);
-            }
+            var text = File.ReadAllText(outputPath);
+            Console.WriteLine(text);
         }
     }
-
 }
+
