@@ -1,37 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise2
+namespace Exercise1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            PrintAssembkyVersion();
-            PrintFileversion();
-            Console.ReadLine();
+            var text = "Cozy lummox gives smart squid who asks for job pen";
+            Exercise1_1(text);
+            Console.WriteLine();
+            Exercise1_2(text);
         }
 
-        private static void PrintAssembkyVersion()
+        static void Exercise1_1(string text)
         {
-            var asm = Assembly.GetExecutingAssembly();
-            var ver = asm.GetName().Version;
-            Console.WriteLine("Assembly Version: {0}.{1}.{2}.{3}",
-               ver.Major, ver.Minor, ver.Build, ver.Revision);
+            var dict = new Dictionary<Char, int>();
+            foreach (var c in text)
+            {
+                var uc = char.ToUpper(c);
+                if ('A' <= uc && uc <= 'Z')
+                {
+                    if (dict.ContainsKey(uc))
+                        dict[uc]++;
+                    else
+                        dict[uc] = 1;
+                }
+            }
+            foreach (var item in dict.OrderBy(x => x.Key))
+                Console.WriteLine("{0}:{1}", item.Key, item.Value);
         }
 
-        private static void PrintFileversion()
+        static void Exercise1_2(string text)
         {
-            var location = Assembly.GetExecutingAssembly().Location;
-            var ver = FileVersionInfo.GetVersionInfo(location);
-            Console.WriteLine("File Version: {0}.{1}.{2}.{3}",
-                              ver.FileMajorPart, ver.FileMinorPart,
-                              ver.FileBuildPart, ver.FilePrivatePart);
+            var dict = new SortedDictionary<Char, int>();
+            foreach (var c in text)
+            {
+                var uc = char.ToUpper(c);
+                if ('A' <= uc && uc <= 'Z')
+                {
+                    if (dict.ContainsKey(uc))
+                        dict[uc]++;
+                    else
+                        dict[uc] = 1;
+                }
+            }
+            foreach (var item in dict)
+                Console.WriteLine("{0}:{1}", item.Key, item.Value);
         }
     }
 }
