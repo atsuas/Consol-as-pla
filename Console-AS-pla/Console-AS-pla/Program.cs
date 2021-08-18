@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Exercise1
 {
@@ -12,74 +10,46 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var file = "sample.xml";
-            Exercise1_1(file);
+            var text = "Cozy lummox gives smart squid who asks for job pen";
+            Exercise1_1(text);
             Console.WriteLine();
-            Exercise1_2(file);
-            Console.WriteLine();
-            Exercise1_3(file);
-            Console.WriteLine();
-
-            var newfile = "sports.xml";
-            Exercise1_4(file, newfile);
-
-            // これは確認用
-            var text = File.ReadAllText(newfile);
-            Console.WriteLine(text);
+            Exercise1_2(text);
         }
 
-        static void Exercise1_1(string file)
+        static void Exercise1_1(string text)
         {
-            var xdoc = XDocument.Load(file);
-            var sports = xdoc.Root.Elements()
-                             .Select(x => new {
-                                 Name = x.Element("name").Value,
-                                 Teammembers = x.Element("teammembers").Value
-                             });
-            foreach (var sport in sports)
+            var dict = new Dictionary<Char, int>();
+            foreach (var c in text)
             {
-                Console.WriteLine("{0} {1}", sport.Name, sport.Teammembers);
+                var uc = char.ToUpper(c);
+                if ('A' <= uc && uc <= 'Z')
+                {
+                    if (dict.ContainsKey(uc))
+                        dict[uc]++;
+                    else
+                        dict[uc] = 1;
+                }
             }
+            foreach (var item in dict.OrderBy(x => x.Key))
+                Console.WriteLine("{0}:{1}", item.Key, item.Value);
         }
-        static void Exercise1_2(string file)
+
+        static void Exercise1_2(string text)
         {
-            var xdoc = XDocument.Load(file);
-            var sports = xdoc.Root.Elements()
-                             .Select(x => new {
-                                 Firstplayed = x.Element("firstplayed").Value,
-                                 Name = x.Element("name").Attribute("kanji").Value
-                             })
-                             .OrderBy(x => int.Parse(x.Firstplayed));
-            foreach (var sport in sports)
+            var dict = new SortedDictionary<Char, int>();
+            foreach (var c in text)
             {
-                Console.WriteLine("{0}", sport.Name);
+                var uc = char.ToUpper(c);
+                if ('A' <= uc && uc <= 'Z')
+                {
+                    if (dict.ContainsKey(uc))
+                        dict[uc]++;
+                    else
+                        dict[uc] = 1;
+                }
             }
+            foreach (var item in dict)
+                Console.WriteLine("{0}:{1}", item.Key, item.Value);
         }
-
-        static void Exercise1_3(string file)
-        {
-            var xdoc = XDocument.Load(file);
-            var sport = xdoc.Root.Elements()
-                             .Select(x => new {
-                                 Name = x.Element("name").Value,
-                                 Teammembers = x.Element("teammembers").Value
-                             })
-                             .OrderByDescending(x => int.Parse(x.Teammembers))
-                             .First();
-            Console.WriteLine("{0}", sport.Name);
-        }
-
-        static void Exercise1_4(string file, string newfile)
-        {
-            var xdoc = XDocument.Load(file);
-            var element = new XElement("ballsport",
-                 new XElement("name", "サッカー", new XAttribute("kanji", "蹴球")),
-                 new XElement("teammembers", "11"),
-                 new XElement("firstplayed", "1863")
-              );
-            xdoc.Root.Add(element);
-            xdoc.Save(newfile);
-        }
-
     }
 }
