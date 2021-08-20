@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+// コンソールアプリケーションとして作成しています。
 
 namespace Exercise1
 {
@@ -10,46 +13,31 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            var text = "Cozy lummox gives smart squid who asks for job pen";
-            Exercise1_1(text);
-            Console.WriteLine();
-            Exercise1_2(text);
+            RunAsync();
+            // 非同期で動作しているので、ここでキー入力待ちにして、プログラムが終わらないようにしている。
+            // Mainメソッドには、async は使えない。
+            Console.ReadLine();
         }
 
-        static void Exercise1_1(string text)
+        private static async void RunAsync()
         {
-            var dict = new Dictionary<Char, int>();
-            foreach (var c in text)
-            {
-                var uc = char.ToUpper(c);
-                if ('A' <= uc && uc <= 'Z')
-                {
-                    if (dict.ContainsKey(uc))
-                        dict[uc]++;
-                    else
-                        dict[uc] = 1;
-                }
-            }
-            foreach (var item in dict.OrderBy(x => x.Key))
-                Console.WriteLine("{0}:{1}", item.Key, item.Value);
+            var text = await TextReaderSample.ReadTextAsync("oop.md");
+            Console.WriteLine(text);
         }
+    }
 
-        static void Exercise1_2(string text)
+    static class TextReaderSample
+    {
+        public static async Task<string> ReadTextAsync(string filePath)
         {
-            var dict = new SortedDictionary<Char, int>();
-            foreach (var c in text)
+            var sb = new StringBuilder();
+            var sr = new StreamReader(filePath);
+            while (!sr.EndOfStream)
             {
-                var uc = char.ToUpper(c);
-                if ('A' <= uc && uc <= 'Z')
-                {
-                    if (dict.ContainsKey(uc))
-                        dict[uc]++;
-                    else
-                        dict[uc] = 1;
-                }
+                var line = await sr.ReadLineAsync();
+                sb.AppendLine(line);
             }
-            foreach (var item in dict)
-                Console.WriteLine("{0}:{1}", item.Key, item.Value);
+            return sb.ToString();
         }
     }
 }
