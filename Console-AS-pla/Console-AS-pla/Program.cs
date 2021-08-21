@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-// コンソールアプリケーションとして作成しています。
 
 namespace Exercise1
 {
@@ -13,31 +10,53 @@ namespace Exercise1
     {
         static void Main(string[] args)
         {
-            RunAsync();
-            // 非同期で動作しているので、ここでキー入力待ちにして、プログラムが終わらないようにしている。
-            // Mainメソッドには、async は使えない。
-            Console.ReadLine();
+            var numbers = new int[] { 5, 10, 17, 9, 3, 21, 10, 40, 21, 3, 35 };
+
+            Exercise1_1(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_2(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_3(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_4(numbers);
+            Console.WriteLine("-----");
+
+            Exercise1_5(numbers);
         }
 
-        private static async void RunAsync()
+        private static void Exercise1_1(int[] numbers)
         {
-            var text = await TextReaderSample.ReadTextAsync("oop.md");
-            Console.WriteLine(text);
+            var max = numbers.Max();
+            Console.WriteLine(max);
         }
-    }
 
-    static class TextReaderSample
-    {
-        public static async Task<string> ReadTextAsync(string filePath)
+        private static void Exercise1_2(int[] numbers)
         {
-            var sb = new StringBuilder();
-            var sr = new StreamReader(filePath);
-            while (!sr.EndOfStream)
-            {
-                var line = await sr.ReadLineAsync();
-                sb.AppendLine(line);
-            }
-            return sb.ToString();
+            var skip = numbers.Length - 2;
+            foreach (var n in numbers.Skip(skip))
+                Console.WriteLine(n);
+        }
+
+        private static void Exercise1_3(int[] numbers)
+        {
+            var strs = numbers.Select(n => n.ToString());
+            foreach (var s in strs)
+                Console.WriteLine(s);
+        }
+
+        private static void Exercise1_4(int[] numbers)
+        {
+            foreach (var n in numbers.OrderBy(n => n).Take(3))
+                Console.WriteLine(n);
+        }
+
+        private static void Exercise1_5(int[] numbers)
+        {
+            var count = numbers.Distinct().Count(n => n > 10);
+            Console.WriteLine(count);
         }
     }
 }
