@@ -1,31 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Exercise3
+// コンソールアプリケーションとして作成しています。
+
+namespace Exercise1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var texts = new[] {
-               "Time is money.",
-               "What time is it?",
-               "It will take time.",
-               "We reorganized the timetable.",
-            };
+            RunAsync();
+            // 非同期で動作しているので、ここでキー入力待ちにして、プログラムが終わらないようにしている。
+            // Mainメソッドには、async は使えない。
+            Console.ReadLine();
+        }
 
-            foreach (var line in texts)
+        private static async void RunAsync()
+        {
+            var text = await TextReaderSample.ReadTextAsync("oop.md");
+            Console.WriteLine(text);
+        }
+    }
+
+    static class TextReaderSample
+    {
+        public static async Task<string> ReadTextAsync(string filePath)
+        {
+            var sb = new StringBuilder();
+            var sr = new StreamReader(filePath);
+            while (!sr.EndOfStream)
             {
-                var matches = Regex.Matches(line, @"\btime\b", RegexOptions.IgnoreCase);
-                foreach (Match m in matches)
-                {
-                    Console.WriteLine("{0}: {1}", line, m.Index);
-                }
+                var line = await sr.ReadLineAsync();
+                sb.AppendLine(line);
             }
+            return sb.ToString();
         }
     }
 }
