@@ -5,39 +5,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// コンソールアプリケーションとして作成しています。
-
-namespace Exercise1
+namespace Exercise4
 {
     class Program
     {
         static void Main(string[] args)
         {
-            RunAsync();
-            // 非同期で動作しているので、ここでキー入力待ちにして、プログラムが終わらないようにしている。
-            // Mainメソッドには、async は使えない。
-            Console.ReadLine();
+            if (args.Length <= 1)
+                return;
+
+            // これは確認用
+            Console.WriteLine($"source: {Path.GetFullPath(args[0])}");
+            Console.WriteLine($"dest:   {Path.GetFullPath(args[1])}\n");
+            // ここまで
+
+            var sourceDir = args[0];
+            var destDir = args[1];
+            CopyFiles(sourceDir, destDir);
         }
 
-        private static async void RunAsync()
+        private static void CopyFiles(string sourceDir, string destDir)
         {
-            var text = await TextReaderSample.ReadTextAsync("oop.md");
-            Console.WriteLine(text);
-        }
-    }
-
-    static class TextReaderSample
-    {
-        public static async Task<string> ReadTextAsync(string filePath)
-        {
-            var sb = new StringBuilder();
-            var sr = new StreamReader(filePath);
-            while (!sr.EndOfStream)
+            var files = Directory.EnumerateFiles(sourceDir, "*.*");
+            if (!Directory.Exists(destDir))
+                Directory.CreateDirectory(destDir);
+            foreach (var file in files)
             {
-                var line = await sr.ReadLineAsync();
-                sb.AppendLine(line);
+                var dest = GetBakFilePath(destDir, file);
+                Console.WriteLine(dest);
+                File.Copy(file, dest, overwrite: true);
             }
-            return sb.ToString();
+        }
+
+        private static string GetBakFilePath(string destDir, string file)
+        {
+            var name = Path.GetFileNameWithoutExtension(file) + "_bak";
+            var ext = Path.GetExtension(file);
+            // 拡張子がないファイルの場合、extは"" なので、無条件にextを追加してもうまくいく
+            return Path.Combine(destDir, name + ext);
         }
     }
 }
