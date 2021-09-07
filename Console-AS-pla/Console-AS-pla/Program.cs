@@ -4,21 +4,41 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.Web;
-using System.Xml.Linq;
 
-namespace Exercise4
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var wc = new WebClient();
-            wc.Encoding = Encoding.UTF8;
-            var html = wc.DownloadString("https://www.visualstudio.com/");
-            File.WriteAllText("sample.html", html);
+            if (args.Length == 0)
+                return;
+            var file = args[0];
+            var outputPath = Numbering(file);
+
+            Display(outputPath);
+        }
+
+        private static string Numbering(string file)
+        {
+            var lines = File.ReadLines(file)
+                            .Select((s, n) => string.Format("{0,4}: {1}", n + 1, s));
+            var path = Path.ChangeExtension(file, ".txt");
+            File.WriteAllLines(path, lines);
+            return path;
+        }
+
+        // 確認用コード
+        private static void Display(string outputPath)
+        {
+            var text = File.ReadAllText(outputPath);
+            Console.WriteLine(text);
         }
     }
-
 }
