@@ -1,44 +1,47 @@
-﻿using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Exercise2
+
+namespace Exercise1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            if (args.Length == 0)
-                return;
-            var file = args[0];
-            var outputPath = Numbering(file);
+            var lines = File.ReadAllLines("commands.txt");
 
-            Display(outputPath);
+            ExecuteCommands(lines);
         }
 
-        private static string Numbering(string file)
+        static ProcessStartInfo CreateStartupInfo(string line)
         {
-            var lines = File.ReadLines(file)
-                            .Select((s, n) => string.Format("{0,4}: {1}", n + 1, s));
-            var path = Path.ChangeExtension(file, ".txt");
-            File.WriteAllLines(path, lines);
-            return path;
+            var items = line.Split('|');
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = items[0],
+                Arguments = items.Length >= 2 ? items[1] : null
+            };
+            return startInfo;
         }
 
-        // 確認用コード
-        private static void Display(string outputPath)
+        static void ExecuteCommands(string[] lines)
         {
-            var text = File.ReadAllText(outputPath);
-            Console.WriteLine(text);
+            foreach (var line in lines)
+            {
+                var info = CreateStartupInfo(line);
+                if (string.IsNullOrWhiteSpace(info.FileName))
+                    continue;
+                using (var process = Process.Start(info))
+                {
+                    process.WaitForExit();
+                }
+            }
         }
     }
 }
