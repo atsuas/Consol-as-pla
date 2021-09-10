@@ -1,47 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-
-namespace Exercise1
+namespace Exercise2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var lines = File.ReadAllLines("commands.txt");
-
-            ExecuteCommands(lines);
-        }
-
-        static ProcessStartInfo CreateStartupInfo(string line)
-        {
-            var items = line.Split('|');
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = items[0],
-                Arguments = items.Length >= 2 ? items[1] : null
+            var names = new List<string> {
+                 "Tokyo", "New Delhi", "Bangkok", "London", "Paris", "Berlin", "Canberra", "Hong Kong",
             };
-            return startInfo;
+            Exercise2_1(names);
+            Console.WriteLine();
+            Exercise2_2(names);
+            Console.WriteLine();
+            Exercise2_3(names);
+            Console.WriteLine();
+            Exercise2_4(names);
         }
 
-        static void ExecuteCommands(string[] lines)
+        static void Exercise2_1(List<string> names)
         {
-            foreach (var line in lines)
+            Console.WriteLine("都市名を入力。空行で終了");
+            do
             {
-                var info = CreateStartupInfo(line);
-                if (string.IsNullOrWhiteSpace(info.FileName))
-                    continue;
-                using (var process = Process.Start(info))
-                {
-                    process.WaitForExit();
-                }
-            }
+                var line = Console.ReadLine();
+                if (string.IsNullOrEmpty(line))
+                    break;
+                var index = names.FindIndex(s => s == line);
+                Console.WriteLine(index);
+            } while (true);
+        }
+
+        static void Exercise2_2(List<string> names)
+        {
+            var count = names.Count(s => s.Contains('o'));
+            Console.WriteLine(count);
+        }
+
+        static void Exercise2_3(List<string> names)
+        {
+            var selected = names.Where(s => s.Contains('o'))
+                                .ToArray();
+            foreach (var name in selected)
+                Console.WriteLine(name);
+        }
+
+        static void Exercise2_4(List<string> names)
+        {
+            var selected = names.Where(s => s.StartsWith("B"))
+                                .Select(s => s.Length);
+            foreach (var length in selected)
+                Console.WriteLine(length);
         }
     }
 }
