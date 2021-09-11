@@ -5,57 +5,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise2
+namespace Exercise4
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var names = new List<string> {
-                 "Tokyo", "New Delhi", "Bangkok", "London", "Paris", "Berlin", "Canberra", "Hong Kong",
-            };
-            Exercise2_1(names);
-            Console.WriteLine();
-            Exercise2_2(names);
-            Console.WriteLine();
-            Exercise2_3(names);
-            Console.WriteLine();
-            Exercise2_4(names);
+            if (args.Length <= 1)
+                return;
+
+            // これは確認用
+            Console.WriteLine($"source: {Path.GetFullPath(args[0])}");
+            Console.WriteLine($"dest:   {Path.GetFullPath(args[1])}\n");
+            // ここまで
+
+            var sourceDir = args[0];
+            var destDir = args[1];
+            CopyFiles(sourceDir, destDir);
         }
 
-        static void Exercise2_1(List<string> names)
+        private static void CopyFiles(string sourceDir, string destDir)
         {
-            Console.WriteLine("都市名を入力。空行で終了");
-            do
+            var files = Directory.EnumerateFiles(sourceDir, "*.*");
+            if (!Directory.Exists(destDir))
+                Directory.CreateDirectory(destDir);
+            foreach (var file in files)
             {
-                var line = Console.ReadLine();
-                if (string.IsNullOrEmpty(line))
-                    break;
-                var index = names.FindIndex(s => s == line);
-                Console.WriteLine(index);
-            } while (true);
+                var dest = GetBakFilePath(destDir, file);
+                Console.WriteLine(dest);
+                File.Copy(file, dest, overwrite: true);
+            }
         }
 
-        static void Exercise2_2(List<string> names)
+        private static string GetBakFilePath(string destDir, string file)
         {
-            var count = names.Count(s => s.Contains('o'));
-            Console.WriteLine(count);
-        }
-
-        static void Exercise2_3(List<string> names)
-        {
-            var selected = names.Where(s => s.Contains('o'))
-                                .ToArray();
-            foreach (var name in selected)
-                Console.WriteLine(name);
-        }
-
-        static void Exercise2_4(List<string> names)
-        {
-            var selected = names.Where(s => s.StartsWith("B"))
-                                .Select(s => s.Length);
-            foreach (var length in selected)
-                Console.WriteLine(length);
+            var name = Path.GetFileNameWithoutExtension(file) + "_bak";
+            var ext = Path.GetExtension(file);
+            // 拡張子がないファイルの場合、extは"" なので、無条件にextを追加してもうまくいく
+            return Path.Combine(destDir, name + ext);
         }
     }
 }
