@@ -4,59 +4,75 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise1
+namespace Exercise3
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var numbers = new int[] { 5, 10, 17, 9, 3, 21, 10, 40, 21, 3, 35 };
+            var text = "Jackdaws love my big sphinx of quartz";
 
-            Exercise1_1(numbers);
+            Exercise3_1(text);
             Console.WriteLine("-----");
 
-            Exercise1_2(numbers);
+            Exercise3_2(text);
             Console.WriteLine("-----");
 
-            Exercise1_3(numbers);
+            Exercise3_3(text);
             Console.WriteLine("-----");
 
-            Exercise1_4(numbers);
+            Exercise3_4(text);
             Console.WriteLine("-----");
 
-            Exercise1_5(numbers);
+            Exercise3_5(text);
         }
 
-        private static void Exercise1_1(int[] numbers)
+        // 5.3.1
+        private static void Exercise3_1(string text)
         {
-            var max = numbers.Max();
-            Console.WriteLine(max);
+            int spaces = text.Count(c => c == ' ');
+            Console.WriteLine("空白数:{0}", spaces);
         }
 
-        private static void Exercise1_2(int[] numbers)
+        // 5.3.2
+        private static void Exercise3_2(string text)
         {
-            var skip = numbers.Length - 2;
-            foreach (var n in numbers.Skip(skip))
-                Console.WriteLine(n);
+            var replaced = text.Replace("big", "small");
+            Console.WriteLine(replaced);
         }
 
-        private static void Exercise1_3(int[] numbers)
+        // 5.3.3
+        private static void Exercise3_3(string text)
         {
-            var strs = numbers.Select(n => n.ToString());
-            foreach (var s in strs)
-                Console.WriteLine(s);
+            int count = text.Split(' ').Length;
+            Console.WriteLine("単語数:{0}", count);
         }
 
-        private static void Exercise1_4(int[] numbers)
+        // 5.3.4
+        private static void Exercise3_4(string text)
         {
-            foreach (var n in numbers.OrderBy(n => n).Take(3))
-                Console.WriteLine(n);
+            var words = text.Split(' ')
+                            .Where(s => s.Length <= 4);
+            foreach (var word in words)
+                Console.WriteLine(word);
         }
 
-        private static void Exercise1_5(int[] numbers)
+        // 5.3.5
+        private static void Exercise3_5(string text)
         {
-            var count = numbers.Distinct().Count(n => n > 10);
-            Console.WriteLine(count);
+            var array = text.Split(' ')
+                            .ToArray();
+            if (array.Length > 0)
+            {
+                var sb = new StringBuilder(array[0]);
+                foreach (var word in array.Skip(1))
+                {
+                    sb.Append(' ');
+                    sb.Append(word);
+                }
+                var clone = sb.ToString();
+                Console.WriteLine(clone);
+            }
         }
     }
 }
