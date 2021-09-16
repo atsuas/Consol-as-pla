@@ -1,78 +1,146 @@
-﻿using System;
+﻿using Chapter15;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise3
+namespace Exercise1
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            var text = "Jackdaws love my big sphinx of quartz";
+            Exercise1_2();
+            Console.WriteLine();
+            Exercise1_3();
+            Console.WriteLine();
+            Exercise1_4();
+            Console.WriteLine();
+            Exercise1_5();
+            Console.WriteLine();
+            Exercise1_6();
+            Console.WriteLine();
+            Exercise1_7();
+            Console.WriteLine();
+            Exercise1_8();
 
-            Exercise3_1(text);
-            Console.WriteLine("-----");
-
-            Exercise3_2(text);
-            Console.WriteLine("-----");
-
-            Exercise3_3(text);
-            Console.WriteLine("-----");
-
-            Exercise3_4(text);
-            Console.WriteLine("-----");
-
-            Exercise3_5(text);
+            Console.ReadLine();
         }
 
-        // 5.3.1
-        private static void Exercise3_1(string text)
+        static void Exercise1_2()
         {
-            int spaces = text.Count(c => c == ' ');
-            Console.WriteLine("空白数:{0}", spaces);
+            var max = Library.Books.Max(b => b.Price);
+            var book = Library.Books.First(b => b.Price == max);
+            Console.WriteLine(book);
         }
 
-        // 5.3.2
-        private static void Exercise3_2(string text)
+        static void Exercise1_3()
         {
-            var replaced = text.Replace("big", "small");
-            Console.WriteLine(replaced);
-        }
-
-        // 5.3.3
-        private static void Exercise3_3(string text)
-        {
-            int count = text.Split(' ').Length;
-            Console.WriteLine("単語数:{0}", count);
-        }
-
-        // 5.3.4
-        private static void Exercise3_4(string text)
-        {
-            var words = text.Split(' ')
-                            .Where(s => s.Length <= 4);
-            foreach (var word in words)
-                Console.WriteLine(word);
-        }
-
-        // 5.3.5
-        private static void Exercise3_5(string text)
-        {
-            var array = text.Split(' ')
-                            .ToArray();
-            if (array.Length > 0)
+            var query = Library.Books.GroupBy(b => b.PublishedYear)
+                               .Select(g => new { PublishedYear = g.Key, Count = g.Count() })
+                               .OrderBy(x => x.PublishedYear);
+            foreach (var item in query)
             {
-                var sb = new StringBuilder(array[0]);
-                foreach (var word in array.Skip(1))
-                {
-                    sb.Append(' ');
-                    sb.Append(word);
-                }
-                var clone = sb.ToString();
-                Console.WriteLine(clone);
+                Console.WriteLine("{0}年 {1}冊", item.PublishedYear, item.Count);
             }
+        }
+
+        static void Exercise1_4()
+        {
+            var query = Library.Books
+                               .Join(Library.Categories,
+                                    book => book.CategoryId,
+                                    category => category.Id,
+                                     (book, category) => new {
+                                         book.Title,
+                                         book.PublishedYear,
+                                         book.Price,
+                                         CategoryName = category.Name
+                                     })
+                               .OrderByDescending(x => x.PublishedYear)
+                               .ThenByDescending(x => x.Price);
+            foreach (var item in query)
+                Console.WriteLine("{0}年 {1}円 {2} ({3})",
+                                  item.PublishedYear,
+                                  item.Price,
+                                  item.Title,
+                                  item.CategoryName
+                                 );
+        }
+
+        static void Exercise1_5()
+        {
+            var query = Library.Books
+                               .Where(b => b.PublishedYear == 2016)
+                               .Join(
+                                   Library.Categories, book => book.CategoryId,
+                                   category => category.Id,
+                                   (book, category) => category.Name)
+                               .Distinct();
+            foreach (var name in query)
+                Console.WriteLine(name);
+        }
+
+        static void Exercise1_6()
+        {
+            var query = Library.Books
+                               .Join(Library.Categories,
+                                    book => book.CategoryId,
+                                    category => category.Id,
+                                     (book, category) => new {
+                                         book.Title,
+                                         book.PublishedYear,
+                                         book.Price,
+                                         CategoryName = category.Name
+                                     })
+                               .GroupBy(x => x.CategoryName)
+                               .OrderBy(x => x.Key);
+            foreach (var group in query)
+            {
+                Console.WriteLine("#{0}", group.Key);
+                foreach (var item in group)
+                {
+                    Console.WriteLine(" {0}",
+                                  item.Title,
+                                  item.PublishedYear,
+                                  item.Price
+                                 );
+                }
+            }
+        }
+
+        private static void Exercise1_7()
+        {
+            var catid = Library.Categories.Single(c => c.Name == "Development").Id;
+            var groups = Library.Books
+                                .Where(b => b.CategoryId == catid)
+                                .GroupBy(b => b.PublishedYear)
+                                .OrderBy(b => b.Key);
+            foreach (var group in groups)
+            {
+                Console.WriteLine("#{0}年", group.Key);
+                foreach (var book in group)
+                {
+                    Console.WriteLine(" {0}", book.Title);
+                }
+            }
+        }
+
+        private static void Exercise1_8()
+        {
+            var query = Library.Categories
+                               .GroupJoin(
+                                    Library.Books,
+                                    c => c.Id,
+                                    b => b.CategoryId,
+                                    (c, b) => new {
+                                        CategoryName = c.Name,
+                                        Count = b.Count()
+                                    })
+                                .Where(x => x.Count >= 4);
+            foreach (var category in query)
+                Console.WriteLine(category.CategoryName);
         }
     }
 }
