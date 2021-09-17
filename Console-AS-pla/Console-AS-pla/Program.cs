@@ -1,146 +1,105 @@
-﻿using Chapter15;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exercise1
+namespace Exercise2
 {
     class Program
     {
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
-            Exercise1_2();
-            Console.WriteLine();
-            Exercise1_3();
-            Console.WriteLine();
-            Exercise1_4();
-            Console.WriteLine();
-            Exercise1_5();
-            Console.WriteLine();
-            Exercise1_6();
-            Console.WriteLine();
-            Exercise1_7();
-            Console.WriteLine();
-            Exercise1_8();
+            var books = new List<Book> {
+               new Book { Title = "C#プログラミングの新常識", Price = 3800, Pages = 378 },
+               new Book { Title = "ラムダ式とLINQの極意", Price = 2500, Pages = 312 },
+               new Book { Title = "ワンダフル・C#ライフ", Price = 2900, Pages = 385 },
+               new Book { Title = "一人で学ぶ並列処理プログラミング", Price = 4800, Pages = 464 },
+               new Book { Title = "フレーズで覚えるC#入門", Price = 5300, Pages = 604 },
+               new Book { Title = "私でも分かったASP.NET MVC", Price = 3200, Pages = 453 },
+               new Book { Title = "楽しいC#プログラミング教室", Price = 2540, Pages = 348 },
+            };
 
-            Console.ReadLine();
+            Exercise2_1(books);
+            Console.WriteLine("-----");
+
+            Exercise2_2(books);
+
+            Console.WriteLine("-----");
+
+            Exercise2_3(books);
+            Console.WriteLine("-----");
+
+            Exercise2_4(books);
+            Console.WriteLine("-----");
+
+            Exercise2_5(books);
+            Console.WriteLine("-----");
+
+            Exercise2_6(books);
+
+            Console.WriteLine("-----");
+
+            Exercise2_7(books);
         }
 
-        static void Exercise1_2()
+        private static void Exercise2_1(List<Book> books)
         {
-            var max = Library.Books.Max(b => b.Price);
-            var book = Library.Books.First(b => b.Price == max);
-            Console.WriteLine(book);
+            var book = books.FirstOrDefault(b => b.Title == "ワンダフル・C#ライフ");
+            if (book != null)
+                Console.WriteLine("{0} {1}", book.Price, book.Pages);
         }
 
-        static void Exercise1_3()
+        private static void Exercise2_2(List<Book> books)
         {
-            var query = Library.Books.GroupBy(b => b.PublishedYear)
-                               .Select(g => new { PublishedYear = g.Key, Count = g.Count() })
-                               .OrderBy(x => x.PublishedYear);
-            foreach (var item in query)
+            int count = books.Count(b => b.Title.Contains("C#"));
+            Console.WriteLine(count);
+        }
+
+        private static void Exercise2_3(List<Book> books)
+        {
+            var average = books.Where(b => b.Title.Contains("C#"))
+                               .Average(b => b.Pages);
+            Console.WriteLine(average);
+        }
+
+        private static void Exercise2_4(List<Book> books)
+        {
+            var book = books.FirstOrDefault(b => b.Price >= 4000);
+            if (book != null)
+                Console.WriteLine(book.Title);
+        }
+
+        private static void Exercise2_5(List<Book> books)
+        {
+            var pages = books.Where(b => b.Price < 4000)
+                             .Max(b => b.Pages);
+            Console.WriteLine(pages);
+        }
+
+        private static void Exercise2_6(List<Book> books)
+        {
+            var selected = books.Where(b => b.Pages >= 400)
+                                .OrderByDescending(b => b.Price);
+            foreach (var book in selected)
             {
-                Console.WriteLine("{0}年 {1}冊", item.PublishedYear, item.Count);
+                Console.WriteLine("{0} {1}", book.Title, book.Price);
             }
         }
 
-        static void Exercise1_4()
+        private static void Exercise2_7(List<Book> books)
         {
-            var query = Library.Books
-                               .Join(Library.Categories,
-                                    book => book.CategoryId,
-                                    category => category.Id,
-                                     (book, category) => new {
-                                         book.Title,
-                                         book.PublishedYear,
-                                         book.Price,
-                                         CategoryName = category.Name
-                                     })
-                               .OrderByDescending(x => x.PublishedYear)
-                               .ThenByDescending(x => x.Price);
-            foreach (var item in query)
-                Console.WriteLine("{0}年 {1}円 {2} ({3})",
-                                  item.PublishedYear,
-                                  item.Price,
-                                  item.Title,
-                                  item.CategoryName
-                                 );
-        }
-
-        static void Exercise1_5()
-        {
-            var query = Library.Books
-                               .Where(b => b.PublishedYear == 2016)
-                               .Join(
-                                   Library.Categories, book => book.CategoryId,
-                                   category => category.Id,
-                                   (book, category) => category.Name)
-                               .Distinct();
-            foreach (var name in query)
-                Console.WriteLine(name);
-        }
-
-        static void Exercise1_6()
-        {
-            var query = Library.Books
-                               .Join(Library.Categories,
-                                    book => book.CategoryId,
-                                    category => category.Id,
-                                     (book, category) => new {
-                                         book.Title,
-                                         book.PublishedYear,
-                                         book.Price,
-                                         CategoryName = category.Name
-                                     })
-                               .GroupBy(x => x.CategoryName)
-                               .OrderBy(x => x.Key);
-            foreach (var group in query)
-            {
-                Console.WriteLine("#{0}", group.Key);
-                foreach (var item in group)
-                {
-                    Console.WriteLine(" {0}",
-                                  item.Title,
-                                  item.PublishedYear,
-                                  item.Price
-                                 );
-                }
-            }
-        }
-
-        private static void Exercise1_7()
-        {
-            var catid = Library.Categories.Single(c => c.Name == "Development").Id;
-            var groups = Library.Books
-                                .Where(b => b.CategoryId == catid)
-                                .GroupBy(b => b.PublishedYear)
-                                .OrderBy(b => b.Key);
-            foreach (var group in groups)
-            {
-                Console.WriteLine("#{0}年", group.Key);
-                foreach (var book in group)
-                {
-                    Console.WriteLine(" {0}", book.Title);
-                }
-            }
-        }
-
-        private static void Exercise1_8()
-        {
-            var query = Library.Categories
-                               .GroupJoin(
-                                    Library.Books,
-                                    c => c.Id,
-                                    b => b.CategoryId,
-                                    (c, b) => new {
-                                        CategoryName = c.Name,
-                                        Count = b.Count()
-                                    })
-                                .Where(x => x.Count >= 4);
-            foreach (var category in query)
-                Console.WriteLine(category.CategoryName);
+            var selected = books.Where(b => b.Title.Contains("C#") && b.Pages <= 500);
+            foreach (var book in selected)
+                Console.WriteLine(book.Title);
         }
     }
+
+    class Book
+    {
+        public string Title { get; set; }
+        public int Price { get; set; }
+        public int Pages { get; set; }
+    }
+
 }
